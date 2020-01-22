@@ -3,9 +3,8 @@
 /*WELCOME TO PHP MAGIC BITS *
  * PhpMagic bits or PMB is a library template for the most basic mysqli functions in php to the advanced php calls such as file upload, write read and Simple UX ui functions.
  *
- * Long description for file (if any)...
  *
- * PHP version 2
+ * PHP version 2.0
  *
  * LICENSE: This source file is subject to version 3.01 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -20,7 +19,7 @@
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version    2.0
  * @link       https://github.com/Asanetic/phpmagicbits
- * @DOCUMENTATION : https://github.com/Asanetic/phpmagicbits
+ * @DOCUMENTATION : https://github.com/Asanetic/phpmagicbits/blob/master/README.md
 */
 
 
