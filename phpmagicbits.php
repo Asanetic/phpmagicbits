@@ -1,7 +1,7 @@
 <?php
 
-/*WELCOME TO PHP MAGIC BITS *
- * PhpMagic bits or PMB is a library template for the most basic mysqli functions in php to the advanced php calls such as file upload, write read and Simple UX ui functions.
+/*WELCOME TO PHP MAGIC BITS OPEN SOURCE*
+ * PhpMagic bits or PMB is an open source library template for the most basic mysqli functions in php to the advanced php calls such as file upload, write read and Simple UX ui functions.
  *
  *
  * PHP version 2.0
