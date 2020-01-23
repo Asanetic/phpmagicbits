@@ -6,11 +6,16 @@
  *
  * PHP version 2.0
  *
- * LICENSE: This source file is subject to version 3.01 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_01.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
+	===================================================================================================================================
+	Copyright 2020 ASANETIC TECHNOLOGIES
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+	===================================================================================================================================
  *
  * @category   PHP Library
  * @package    PHP MAGIC BITS
@@ -238,6 +243,30 @@ function magic_button_link($location, $name_text, $additional_attributes)
 	$linkstr=$newlinkstr;
 
 	return $linkstr;
+
+}
+
+
+function magic_dropdown($title, $dropdown_items, $inline_css_yes_no)
+{
+
+	global $dropdown;
+
+		$inline_css=drop_css();
+
+		if($inline_css_yes_no=='no'){
+		$inline_css="";
+		}
+
+	  $dropdown = 
+	  $inline_css.'<div class="table_cell_dropdown">
+		  <div class="table_cell_dropbtn">'.$title.'</div>
+		  <div class="table_cell_dropdown-content">
+		  	'.$dropdown_items.'
+		  </div>
+		</div>';
+
+		return $dropdown;
 
 }
 
@@ -518,6 +547,28 @@ function magic_sql_show_cols($tbl)
 
 }
 
+function magic_sql_array_cols($tbl)
+{
+	global $single_db;
+	global $single_conn;
+	global $columns_to_write;
+
+	$write_tbl_cols_query = mysqli_query($single_conn, "SHOW COLUMNS FROM `$single_db`.`$tbl`");
+
+	$found_columns=array();
+
+	while($write_tbl_cols_res = mysqli_fetch_array($write_tbl_cols_query)){
+
+		$found_columns[]=''.$write_tbl_cols_res['Field'].'';
+	}
+
+	$columns_to_write=$found_columns;
+
+	return $columns_to_write;
+
+}
+
+
 function magic_multisql_show_cols($conn, $db, $tbl)
 {
 
@@ -537,6 +588,26 @@ function magic_multisql_show_cols($conn, $db, $tbl)
 	return $columns_to_write;
 
 }
+function magic_multisql_array_cols($conn, $db, $tbl)
+{
+
+	global $columns_to_array;
+
+	$write_tbl_cols_query = mysqli_query($conn, "SHOW COLUMNS FROM `$db`.`$tbl`");
+
+	$found_columns=array();
+
+	while($write_tbl_cols_res = mysqli_fetch_array($write_tbl_cols_query)){
+
+		$found_columns[]=''.$write_tbl_cols_res['Field'].'';
+	}
+
+	$columns_to_write=[implode(',', $found_columns)];
+
+	return $columns_to_write;
+
+}
+
 //------------------------- end write table columns in the current file--------//
 
 
@@ -593,52 +664,56 @@ function magic_sql_params($file_path, $param_fields, $comment)
 
 	global $sql_param_data;
 
+		$var_prefix='';
 
+		if($comment!=""){
+			$var_prefix=strtolower(str_replace(" ", '_', $comment))."_";
+		}
 
 		$final_sql_block="";
-		$insert_cols="";
-		$insert_values="";
-		$update_vars="";
+		$insert_cols=array();
+		$insert_values=array();
+		$update_vars=array();
 		$ajax_fields="";
-		$ajax_update_vars="";
-		$ajax_insert_values="";
-		$ajax_insert_cols="";
-		$json_post_params="";
+		$ajax_update_vars=array();
+		$ajax_insert_values=array();
+		$ajax_insert_cols=array();
+		$json_post_params=array();
 
 
 		foreach ($param_fields as $sql_vars) {
 
 			$final_sql_block.='$'.$sql_vars.'=mysqli_real_escape_string($mysqliconn, $_POST["txt_'.$sql_vars.'"]);'.PHP_EOL;
 
-			$insert_cols.='`'.$sql_vars.'`, ';
-			$insert_values.="'$".$sql_vars."', ";
-			$update_vars.='`'.$sql_vars.'`=\'$'.$sql_vars.'\', ';
+			$insert_cols[]='`'.$sql_vars.'`';
+			$insert_values[]="'$".$sql_vars."'";
+			$update_vars[]='`'.$sql_vars.'`=\'$'.$sql_vars.'\'';
 
-			$ajax_update_vars.='`'.$sql_vars.'`=\'"+mysqli_real_escape_string('.$sql_vars.'.value)+"\', ';
+			$ajax_update_vars[]='`'.$sql_vars.'`=\'"+mysqli_real_escape_string('.$sql_vars.'.value)+"\'';
 
 			$ajax_fields.= 'var '.$sql_vars.' = document.getElementById("txt_'.$sql_vars.'");'.PHP_EOL;
 
-			$ajax_insert_values.='\'"+mysqli_real_escape_string('.$sql_vars.'.value)+"\', ';
-			$ajax_insert_cols.='`'.$sql_vars.'`, ';
-			$json_post_params.='"'.$sql_vars.'":"?",';
+			$ajax_insert_values[]='\'"+mysqli_real_escape_string('.$sql_vars.'.value)+"\'';
+			$ajax_insert_cols[]='`'.$sql_vars.'`';
+			$json_post_params[]='"'.$sql_vars.'":"?"';
 
 
 
 		}
 
-		$insert_val_arr='$post_vars='.$insert_values.';';
+		$insert_val_arr='$'.$var_prefix.'post_vars="'.implode(',', $insert_values).'";';
 
-		$insert_cols_arr='$insert_col_arrays='.$insert_cols.';';
+		$insert_cols_arr='$'.$var_prefix.'insert_col_arrays="'.implode(',', $insert_cols).'";';
 
 		$combined_arr=$insert_cols_arr.PHP_EOL.$insert_val_arr;
 
-		$update_var_array='$update_fileds="'.$update_vars.'"';
+		$update_var_array='$'.$var_prefix.'update_fileds="'.implode(',', $update_vars).'"';
 
 		$generated_ajax_fields=''.$ajax_fields.'';
-		$generated_ajax_update_vars='var ajax_update_fields='.$ajax_update_vars.'';
-		$generated_ajax_insert_values='var ajax_insert_fields_values='.$ajax_insert_values.'';
-		$generated_ajax_insert_cols='var ajax_insert_cols='.$ajax_insert_cols.'';
-		$json_post_params_finale='$json_post_params=\'{'.$json_post_params.'}';
+		$generated_ajax_update_vars='var '.$var_prefix.'ajax_update_fields="'.implode(',', $ajax_update_vars).'"';
+		$generated_ajax_insert_values='var '.$var_prefix.'ajax_insert_fields_values="'.implode(',', $ajax_insert_values).'";';
+		$generated_ajax_insert_cols='var '.$var_prefix.'ajax_insert_cols="'.implode(',', $ajax_insert_cols).'"';
+		$json_post_params_finale='$'.$var_prefix.'json_post_params=\'{'.implode(',', $json_post_params).'}\';';
 
 
 
@@ -655,6 +730,113 @@ function magic_sql_params($file_path, $param_fields, $comment)
 
 
 }
+
+	function magic_post_value($postname)
+	{
+
+	}
+	function magic_validate_email ($input_validate_json,$message)
+	{
+
+	global $validate_array;
+
+	$validate_msg="";
+	$validate_state=array();
+	
+
+
+	$json_validate_array = json_decode($input_validate_json, true);
+
+	foreach ($json_validate_array as $key => $value) 
+	{
+
+		if($json_validate_array[$key]=="?"){
+
+			$field_name="txt_".$key;
+
+		}else{
+
+
+			$field_name=$json_validate_array[$key];
+
+		}
+		if(isset($_POST[$field_name])){
+
+		if (!filter_var($_POST[$field_name], FILTER_VALIDATE_EMAIL)) {
+
+				$validate_state[]="Invalid";
+
+
+				if($message==""){
+					$validate_msg='<em class="validate_error_class">Invalid Email</em>';
+
+				}else{
+					$validate_msg='<em class="validate_error_class">'.$message.'</em>';
+				}
+
+			}
+		}
+
+
+	}
+
+		$validate_array=array($validate_state, $validate_msg);
+		
+		return $validate_array;
+
+
+	}
+
+function magic_validate_required($input_validate_json, $message)
+{
+
+	global $validate_array;
+
+	$validate_msg="";
+	$validate_state=array();
+	
+
+
+	$json_validate_array = json_decode($input_validate_json, true);
+
+	foreach ($json_validate_array as $key => $value) 
+	{
+
+		if($json_validate_array[$key]=="?"){
+
+			$field_name="txt_".$key;
+
+		}else{
+
+
+			$field_name=$json_validate_array[$key];
+
+		}
+		if(isset($_POST[$field_name])){
+
+			if($_POST[$field_name]==""){
+
+				$validate_state[]="Empty";
+
+
+				if($message==""){
+					$validate_msg='<em class="validate_error_class">This field is required</em>';
+
+				}else{
+					$validate_msg='<em class="validate_error_class">'.$message.'</em>';
+				}
+
+			}
+		}
+
+	}
+
+		$validate_array=array($validate_state, $validate_msg);
+		
+		return $validate_array;
+
+}
+
 
 //***************************** MAGIC SQL *******************************************************************
 
@@ -1582,10 +1764,19 @@ function magic_css(){
 	global $magic_css;
 
 
-	$magic_css='<style> .msg_alert_modal{display:block;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.msg_modal-content{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:40%}.msg_modal-content_banner{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:52%;font-size:16px}.msg_modalclose{color:#aaa;float:right;font-size:28px;font-weight:700}.msg_modalclose:focus,.msg_modalclose:hover{color:#000;text-decoration:none;cursor:pointer}.validate_error_class{font-size:11px;color:red}.hide_error_class{display:none}</style>';
+	$magic_css='<style> .msg_alert_modal{display:block;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.msg_modal-content{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:40%;text-align:center;}.msg_modal-content_banner{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:52%;font-size:16px}.msg_modalclose{color:#aaa;float:right;font-size:28px;font-weight:700}.msg_modalclose:focus,.msg_modalclose:hover{color:#000;text-decoration:none;cursor:pointer}.validate_error_class{font-size:11px;color:red}.hide_error_class{display:none}</style>';
 
 
 	return $magic_css;
 
+}
+
+function drop_css(){
+
+	global $drop_css;
+
+	$drop_css='<style>.table_cell_dropbtn{font-size:16px;font-weight:700}.table_cell_dropdown{position:relative;display:inline-block}.table_cell_dropdown-content{display:none;position:absolute;background-color:#fff;min-width:160px;box-shadow:0 8px 16px 0 rgba(0,0,0,.2);z-index:1;text-align:left;padding-left:5px;border-left:2px solid #00f}.table_cell_dropdown-content a{color:#000;padding:12px 16px;text-decoration:none;display:block}.table_cell_dropdown-content span{color:#000;padding:12px 16px;text-decoration:none;display:block;cursor:pointer}.table_cell_dropdown-content a:hover{background-color:#ddd}.table_cell_dropdown-content span:hover{background-color:#ddd}.table_cell_dropdown:hover .table_cell_dropdown-content{display:block}tr:hover .table_cell_dropdown-content{display:block}</style>';
+
+	return $drop_css;
 }
 ?>
