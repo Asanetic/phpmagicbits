@@ -354,7 +354,6 @@ function magic_drop_cookie($cookie_name)
 //============================== end Cookie functions  ===============
 
 
-
 //===================== begin drop zone file upload ================
 
 function magic_dropzone_file_upload($path, $tempfile, $new_file_name)
@@ -397,6 +396,18 @@ if (!empty($_FILES)) {
 
 
 }
+
+function magic_destroy_file($file_path){
+	global $path_return;
+
+	unlink($file_path);
+	
+	return $file_path;
+}
+//===================== end drop zone file upload ================
+
+
+
 //===================== end drop zone file upload ================
 
 
@@ -1300,6 +1311,100 @@ function magic_if_image($file_path)
 }
 //------------------------- begin find file type --------//
 
+/////////////// CONVERT HTML FILES TO PHP 
+function html_to_php($php_directory, $html_file){
+
+		$entry=$html_file;
+		$fileattr = pathinfo("./".$entry);
+		$extension=$fileattr['extension'];
+		$directory=$fileattr['dirname'];
+		$filename=$fileattr['filename'];
+		
+		$fileextract="";
+		if($extension=="html"){
+				
+		//echo "Filename only ".$filename." file name ".$entry." Extension ".$extension."<br />";
+		
+		//============= Get HTML file content =================
+		$currhtmlfile=$php_directory.'/'.$entry;
+		
+		$htmlfile_contents=file_get_contents($currhtmlfile);
+		
+		$replace_htmllinks2=str_replace(".html",".php", $htmlfile_contents);
+		$purefilecode=$replace_htmllinks2;		
+		//echo $htmlfile_contents;
+		//============= Get HTML file content =================		
+		$newphp_file=$php_directory."/".$filename.".php";
+	  	$fh = fopen($newphp_file, 'w') or die("can't open file");
+		fwrite($fh, $purefilecode);
+		
+		@unlink($currhtmlfile);
+		//fclose($fh);	
+		
+		}
+}
+
+
+
+//======================  Directory Listings ==============================
+function dirlisting($directory_to_list){
+
+	if ($handle = opendir($directory_to_list)) {
+	
+		while (false !== ($entry = readdir($handle))) {
+	
+			if ($entry != "." && $entry != "..") {
+				$a = $entry;
+		
+				if (strpos($a, '.') !== false) {
+	
+				// ==================== cnovert html files ==================== 
+				html_to_php($directory_to_list, $entry);
+				}else{
+				dirlisting($directory_to_list."/".$entry);
+				}
+			
+			}
+		}
+	}
+}
+
+
+
+function magic_html_to_php($source_folder, $destination_folder)
+{
+
+magic_copy_folder($source_folder, $destination_folder);
+$sqlprotestfile=$destination_folder."/sqlpro3_1_test_file.html";
+$fhtst = fopen($sqlprotestfile, 'w') or die("can't open file");
+fwrite($fhtst, "test file");
+
+dirlisting($destination_folder);
+
+}
+
+function magic_copy_folder($src, $dst) {
+
+  /* Returns false if src doesn't exist */
+  $dir = @opendir($src);
+
+  /* Make destination directory. False on failure */
+  if (!file_exists($dst)) @mkdir($dst);
+
+  /* Recursively copy */
+  while (false !== ($file = readdir($dir))) {
+
+      if (( $file != '.' ) && ( $file != '..' )) {
+         if ( is_dir($src . '/' . $file) ) magic_copy_folder($src . '/' . $file, $dst . '/' . $file); 
+         else copy($src . '/' . $file, $dst . '/' . $file);
+      }
+
+  }
+ closedir($dir); 
+}
+//======================  Directory Listings ==============================
+/////////////// CONVERT HTML FILES TO PHP 
+	
 
 
 
