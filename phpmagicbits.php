@@ -1236,7 +1236,7 @@ function magic_clean_str($str)
     $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
     $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
 
-    $clean_str= str_replace($search, $replace, $value);
+    $clean_str= str_replace($search, $replace, $str);
 
     return $clean_str;
 }
@@ -1884,4 +1884,38 @@ function drop_css(){
 
 	return $drop_css;
 }
+
+function magic_send_mail($to_email, $from_email, $sender_name, $subject, $message)
+{
+	// create email headers
+	$replyto_mail="";
+
+	if($replyto!='')
+	{
+    	$replyto_mail='Reply-To: ' . $to_email . "\r\n";
+	}
+
+	$busmail=$from_email;
+	$bus_name=$sender_name;
+
+	if($to_email=='')
+	{
+		$busmail='info@clearphrases.com';
+	}
+
+	if($sender_name=='')
+	{
+		$bus_name="";
+	}
+
+
+    $headers = 'From: '.$bus_name.'<'.$busmail.'>' . "\r\n" .
+    $headers.=$replyto_mail.
+    'Content-type: text/html; charset=iso-8859-1'. "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+
+    mail($to_email, $subject, $message, $headers);        
+
+}
+
 ?>
