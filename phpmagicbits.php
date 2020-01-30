@@ -247,6 +247,68 @@ function magic_button_link($location, $name_text, $additional_attributes)
 }
 
 
+function magic_share_button($additional_attributes)
+{
+	global $return_share;
+
+	$return_share='<!-- AddToAny BEGIN -->
+	<div class="a2a_kit a2a_kit_size_32 a2a_default_style" '.$additional_attributes.'>
+	<a class="a2a_button_facebook"></a>
+	<a class="a2a_button_twitter"></a>
+	<a class="a2a_button_email"></a>
+	<a class="a2a_button_linkedin"></a>
+	<a class="a2a_button_whatsapp"></a>
+	<a class="a2a_button_telegram"></a>
+	<a class="a2a_button_reddit"></a>
+	<a class="a2a_button_pinterest"></a>
+	<a class="a2a_button_copy_link"></a>
+	<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+	<!--Start of PDF Profile Button-->
+
+
+	</div>
+	<script async src="https://static.addtoany.com/menu/page.js"></script>';
+
+	return $return_share;
+
+
+}
+
+
+function magic_sms_link($phone_no, $message, $title, $additional_attributes)
+{
+global $sms_button;
+
+$sms_button =' <a href="sms://'.$phone_no.';?&body='.preg_replace( "/\r|\n/", '',str_replace('<br />','%0D%0A', nl2br($message))).'" '.$additional_attributes.'>'.$title.'</a>';
+
+	return $sms_button;
+
+}
+
+
+function magic_email_link($send_to, $subject, $message, $title, $additional_attributes)
+{
+	global $magic_email_button;
+
+	$magic_email_button='<a href="mailto:'.$send_to.'&subject='.$subject.'&body='.preg_replace( '/\r|\n/', '',str_replace('<br />','%0D%0A', nl2br($message))).'" '.$additional_attributes.'>'.$title.'</a>';
+
+	return $magic_email_button;
+
+
+}
+
+function magic_whatsapp_button($phone_no, $message, $title, $additional_attributes)
+{
+	global $return_whatsapp_btn;
+
+	$return_whatsapp_btn='<a href="https://api.whatsapp.com/send?phone='.$phone_no.'&text='.preg_replace( '/\r|\n/', "",str_replace('<br />','%0D%0A', nl2br($message))).'" '.$additional_attributes.'>'.$title.'</a>';
+
+	return $return_whatsapp_btn;
+
+}
+
+
+
 function magic_dropdown($title, $dropdown_items, $inline_css_yes_no)
 {
 
@@ -1311,6 +1373,7 @@ function magic_if_image($file_path)
 }
 //------------------------- begin find file type --------//
 
+
 /////////////// CONVERT HTML FILES TO PHP 
 function html_to_php($php_directory, $html_file){
 
@@ -1405,7 +1468,6 @@ function magic_copy_folder($src, $dst) {
 //======================  Directory Listings ==============================
 /////////////// CONVERT HTML FILES TO PHP 
 	
-
 
 
 // ****************************************************************** BEGIN SQL QUERIES *******************************//
@@ -1869,7 +1931,7 @@ function magic_css(){
 	global $magic_css;
 
 
-	$magic_css='<style> .msg_alert_modal{display:block;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.msg_modal-content{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:40%;text-align:center;}.msg_modal-content_banner{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:52%;font-size:16px}.msg_modalclose{color:#aaa;float:right;font-size:28px;font-weight:700}.msg_modalclose:focus,.msg_modalclose:hover{color:#000;text-decoration:none;cursor:pointer}.validate_error_class{font-size:11px;color:red}.hide_error_class{display:none}</style>';
+	$magic_css='<style> .msg_alert_modal{display:block;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.msg_modal-content{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:40%;text-align:center;}.msg_modal-content_banner{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:52%;font-size:16px}.msg_modalclose{color:#aaa;float:right;font-size:28px;font-weight:700}.msg_modalclose:focus,.msg_modalclose:hover{color:#000;text-decoration:none;cursor:pointer}.validate_error_class{font-size:11px;color:red}.hide_error_class{display:none}@media screen and (max-width:700px){.msg_modal-content{width:98%}.msg_modal-content_banner{padding:5px;width:98%}}</style>';
 
 
 	return $magic_css;
@@ -1890,9 +1952,9 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
 	// create email headers
 	$replyto_mail="";
 
-	if($replyto!='')
+	if($from_email!='')
 	{
-    	$replyto_mail='Reply-To: ' . $to_email . "\r\n";
+    	$replyto_mail='Reply-To: ' . $from_email . "\r\n";
 	}
 
 	$busmail=$from_email;
@@ -1909,13 +1971,12 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
 	}
 
 
-    $headers = 'From: '.$bus_name.'<'.$busmail.'>' . "\r\n" .
-    $headers.=$replyto_mail.
-    'Content-type: text/html; charset=iso-8859-1'. "\r\n" .
-    'X-Mailer: PHP/' . phpversion();
+    $headers = 'From: '.$bus_name.'<'.$busmail.'>' . "\r\n";
+    $headers.=$replyto_mail;
+    $headers.='Content-type: text/html; charset=iso-8859-1'. "\r\n";
+    $headers.='X-Mailer: PHP/' . phpversion();
 
     mail($to_email, $subject, $message, $headers);        
 
 }
-
 ?>
