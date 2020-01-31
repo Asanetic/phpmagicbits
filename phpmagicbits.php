@@ -2133,13 +2133,13 @@ $BillRefNumber_prefix=$explode_BillRefNumber[0];
 $BillRefNumber_suffix=$explode_BillRefNumber[1];
 //====================== GET BillRefNumber PREFIX AND SUFFIX ==========
 
-//====================== INSER INTO DB ADD, ANY RELEVANT CODE HERE ==========
+//====================== INSERT INTO DB ADD, ANY RELEVANT CODE HERE ==========
 
-$post_params=\'{"primkey":"NULL","transaction_id":"\'.$trans_id.\'","transaction_ref":"\'.$BillRefNumber.\'","order_no":"\'.$BillRefNumber.\'","date_of_transaction":"\'.date("d-m-Y h:i:s A").\'","month_year":"\'.$date("M-Y").\'","client_id":"\'.date("dmYAhis").\'","fname":"\'.$FirstName.\'","mname":"\'.$MiddleName.\'","lname":"\'.$LastName.\'","email":"","mobile":"\'.$MSISDN.\'","amount":"\'.$TransAmount.\'","type":"Income","transaction_remark":"\'.$tr_type.\'","transaction_status":"Complete","filter_date":"","time_stamp":"\'.date("d-m-Y h:i:s A").\'","site_id":"","tab_type":"","receipt_no":"\'.$trans_id.\'","admin_id":"","payment_mode":"Paybill"}\';
+$post_params=\'{"primkey":"NULL","transaction_id":"\'.$trans_id.\'","transaction_ref":"\'.$BillRefNumber.\'","order_no":"\'.$BillRefNumber.\'","date_of_transaction":"\'.date("d-m-Y h:i:s A").\'","month_year":"\'.date("M-Y").\'","client_id":"\'.date("dmYAhis").\'","fname":"\'.$FirstName.\'","mname":"\'.$MiddleName.\'","lname":"\'.$LastName.\'","email":"","mobile":"\'.$MSISDN.\'","amount":"\'.$TransAmount.\'","type":"Income","transaction_remark":"\'.$tr_type.\'","transaction_status":"Complete","filter_date":"","time_stamp":"\'.date("d-m-Y h:i:s A").\'","site_id":"","tab_type":"","receipt_no":"\'.$trans_id.\'","admin_id":"","payment_mode":"Paybill"}\';
 
 magic_sql_insert("transactions",$post_params);
 
-//====================== INSER INTO DB ADD, ANY RELEVANT CODE HERE ==========
+//====================== INSERT INTO DB ADD, ANY RELEVANT CODE HERE ==========
 
 ?>';
 
