@@ -2071,6 +2071,63 @@ function magic_rel2abs( $rel, $base )
 	return $scheme . '://' . $abs;
 }
 
+function magic_trx_listener($write_to)
+{
 
+	global $return_trx_str;
+
+	$return_trx_str='<?php
+header("Content-Type:application/json");
+
+
+$paybilljson = file_get_contents(\'php://input\');
+            
+//====================== GET RESPONSE JSON DATA ==========
+
+$trx_record = json_decode($paybilljson, true);
+
+$tr_type=$trx_record[\'TransactionType\'];
+$trans_id=$trx_record[\'TransID\'];
+$TransTime=$trx_record[\'TransTime\'];
+$TransAmount=$trx_record[\'TransAmount\'];
+$BusinessShortCode=$trx_record[\'BusinessShortCode\'];
+$BillRefNumber=$trx_record[\'BillRefNumber\'];
+$OrgAccountBalance=$trx_record[\'OrgAccountBalance\'];
+$ThirdPartyTransID=$trx_record[\'ThirdPartyTransID\'];
+$MSISDN=$trx_record[\'MSISDN\'];
+$FirstName=$trx_record[\'FirstName\'];
+$MiddleName=$trx_record[\'MiddleName\'];
+$LastName=$trx_record[\'LastName\'];
+
+//====================== GET RESPONSE JSON DATA ==========
+
+
+//====================== GET BillRefNumber PREFIX AND SUFFIX ==========
+$explode_BillRefNumber=explode("-",$BillRefNumber);
+$BillRefNumber_prefix=$explode_BillRefNumber[0];
+$BillRefNumber_suffix=$explode_BillRefNumber[1];
+//====================== GET BillRefNumber PREFIX AND SUFFIX ==========
+
+//====================== INSER INTO DB ADD, ANY RELEVANT CODE HERE ==========
+
+$post_params=\'{"primkey":"NULL","transaction_id":"\'.$trans_id.\'","transaction_ref":"\'.$BillRefNumber.\'","order_no":"\'.$BillRefNumber.\'","date_of_transaction":"\'.date("d-m-Y h:i:s A").\'","month_year":"\'.$date("M-Y").\'","client_id":"\'.date("dmYAhis").\'","fname":"\'.$FirstName.\'","mname":"\'.$MiddleName.\'","lname":"\'.$LastName.\'","email":"","mobile":"\'.$MSISDN.\'","amount":"\'.$TransAmount.\'","type":"Income","transaction_remark":"\'.$tr_type.\'","transaction_status":"Complete","filter_date":"","time_stamp":"\'.date("d-m-Y h:i:s A").\'","site_id":"","tab_type":"","receipt_no":"\'.$trans_id.\'","admin_id":"","payment_mode":"Paybill"}\';
+
+magic_sql_insert("transactions",$post_params);
+
+//====================== INSER INTO DB ADD, ANY RELEVANT CODE HERE ==========
+
+?>';
+
+if($write_to!=""){
+
+  		$file_to_write = fopen($write_to, 'w') or die("can't open file");
+		fwrite($file_to_write, $return_trx_str);
+		fclose($file_to_write);
+	}
+
+
+	return $return_trx_str;
+
+}
 
 ?>
