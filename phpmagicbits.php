@@ -1979,4 +1979,98 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
     mail($to_email, $subject, $message, $headers);        
 
 }
+
+
+function push_to_paypal($tel_no, $amount_ksh,$ref_no,$app_name,$app_logo_url,$app_slogan)
+
+{
+		global $error_message;
+	if($tel_no=='')
+	{
+		$error_message ="tel_no required";
+	}elseif ($amount_ksh=='')
+	 {
+		$error_message ="amount_ksh required";
+
+	}elseif ($ref_no=='')
+	 
+	{
+		$error_message ="ref_no required";
+	}elseif ($app_name=="")
+	 {
+		$error_message="app_name required";
+	}else{
+
+
+ header('location:https://clearphrases.com/payport/lipa-na-mpesa/paypal_api?payport_online&paidamt='.base64_encode($amount_ksh).'&accno='.base64_encode($ref_no).'&telno='.base64_encode($tel_no).'&request_app_name='.base64_encode($app_name).'&request_app_logo='.base64_encode($app_logo_url).'&request_app_slogan='.base64_encode($app_slogan).'');
+	}
+
+	return $error_message;
+}
+
+function push_to_mpesa($tel_no, $amount_ksh,$ref_no,$app_name,$app_logo_url,$app_slogan)
+{
+	global $error_message;
+	if($tel_no=='')
+	{
+		$error_message ="tel_no required";
+	}elseif ($amount_ksh=='')
+	 {
+		$error_message ="amount_ksh required";
+
+	}elseif ($ref_no=='')
+	 
+	{
+		$error_message ="ref_no required";
+	}elseif ($app_name=="")
+	 {
+		$error_message="app_name required";
+	}else{
+	header('location:https://clearphrases.com/payport/lipa-na-mpesa/buy?payport_online&paidamt='.base64_encode($amount_ksh).'&accno='.base64_encode($ref_no).'&telno='.base64_encode($tel_no).'&request_app_name='.base64_encode($app_name).'&request_app_logo='.base64_encode($app_logo_url).'&request_app_slogan='.base64_encode($app_slogan).'');
+	}
+
+	return $error_message;
+}
+
+function magic_rel2abs( $rel, $base ) 
+{
+
+	// parse base URL  and convert to local variables: $scheme, $host,  $path
+	extract( parse_url( $base ) );
+
+	if ( strpos( $rel,"//" ) === 0 ) {
+		return $scheme . ':' . $rel;
+	}
+
+	// return if already absolute URL
+	if ( parse_url( $rel, PHP_URL_SCHEME ) != '' ) {
+		return $rel;
+	}
+
+	// queries and anchors
+	if ( $rel[0] == '#' || $rel[0] == '?' ) {
+		return $base . $rel;
+	}
+
+	// remove non-directory element from path
+	$path = preg_replace( '#/[^/]*$#', '', $path );
+
+	// destroy path if relative url points to root
+	if ( $rel[0] ==  '/' ) {
+		$path = '';
+	}
+
+	// dirty absolute URL
+	$abs = $host . $path . "/" . $rel;
+
+	// replace '//' or  '/./' or '/foo/../' with '/'
+	$abs = preg_replace( "/(\/\.?\/)/", "/", $abs );
+	$abs = preg_replace( "/\/(?!\.\.)[^\/]+\/\.\.\//", "/", $abs );
+
+	// absolute URL is ready!
+	return $scheme . '://' . $abs;
+}
+
+
+
 ?>
