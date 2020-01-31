@@ -2079,10 +2079,35 @@ function magic_trx_listener($write_to)
 	$return_trx_str='<?php
 header("Content-Type:application/json");
 
+//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING SAMPLE DATA ==========
 
 $paybilljson = file_get_contents(\'php://input\');
+
+//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING SAMPLE DATA ==========
+
+
+//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
+//   $paybilljson=\'{
+//             "TransactionType": "Pay Bill",
+//             "TransID": "ADMIN-SANDBOX",
+//             "TransTime": "\'.date("d-m-Y h:i:s").\'",
+//             "TransAmount": "10000.00",
+//             "BusinessShortCode": "935816",
+//             "BillRefNumber": "EBK-5N02",
+//             "InvoiceNumber": "EBK-5N02",
+//             "OrgAccountBalance": "6000.00",
+//             "ThirdPartyTransID": "0",
+//             "MSISDN": "254710766390",
+//             "FirstName": "JEREMIAH",
+//             "MiddleName": "AKUNGA",
+//             "LastName": "ASANYA"
+//         }\';
+        
+//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
+
+
             
-//====================== GET RESPONSE JSON DATA ==========
+//====================== GET JSON DATA  FROM DECODED JSON ARRAY ==========
 
 $trx_record = json_decode($paybilljson, true);
 
@@ -2099,7 +2124,7 @@ $FirstName=$trx_record[\'FirstName\'];
 $MiddleName=$trx_record[\'MiddleName\'];
 $LastName=$trx_record[\'LastName\'];
 
-//====================== GET RESPONSE JSON DATA ==========
+//====================== GET JSON DATA  FROM DECODED JSON ARRAY ==========
 
 
 //====================== GET BillRefNumber PREFIX AND SUFFIX ==========
@@ -2127,6 +2152,11 @@ if($write_to!=""){
 
 
 	return $return_trx_str;
+
+
+
+
+
 
 }
 
