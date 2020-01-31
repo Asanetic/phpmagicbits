@@ -2086,10 +2086,10 @@ $paybilljson = file_get_contents(\'php://input\');
 //====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING SAMPLE DATA ==========
 
 
-//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
+//====================== SAMPLE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
 //   $paybilljson=\'{
 //             "TransactionType": "Pay Bill",
-//             "TransID": "ADMIN-SANDBOX",
+//             "TransID": "TEST-SANDBOX",
 //             "TransTime": "\'.date("d-m-Y h:i:s").\'",
 //             "TransAmount": "10000.00",
 //             "BusinessShortCode": "935816",
@@ -2097,13 +2097,13 @@ $paybilljson = file_get_contents(\'php://input\');
 //             "InvoiceNumber": "EBK-5N02",
 //             "OrgAccountBalance": "6000.00",
 //             "ThirdPartyTransID": "0",
-//             "MSISDN": "254710766390",
-//             "FirstName": "JEREMIAH",
-//             "MiddleName": "AKUNGA",
-//             "LastName": "ASANYA"
+//             "MSISDN": "+254-000-000-000",
+//             "FirstName": "ASANETIC",
+//             "MiddleName": "TECHNOLOGIES",
+//             "LastName": "INC."
 //         }\';
         
-//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
+//====================== SAMPLE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
 
 
             
