@@ -297,6 +297,17 @@ function magic_email_link($send_to, $subject, $message, $title, $additional_attr
 
 }
 
+function magic_gmail_link($send_to, $subject, $message, $title, $additional_attributes)
+{
+	global $magic_gmail_button;
+
+	$magic_gmail_button='<a href="https://mail.google.com/mail/?view=cm&fs=1&to='.$send_to.'&su='.$subject.'&body='.preg_replace( '/\r|\n/', '',str_replace('<br />','%0D%0A', nl2br($message))).'" '.$additional_attributes.'>'.$title.'</a>';
+
+	return $magic_gmail_button;
+
+
+}
+
 function magic_whatsapp_button($phone_no, $message, $title, $additional_attributes)
 {
 	global $return_whatsapp_btn;
@@ -2160,4 +2171,51 @@ if($write_to!=""){
 
 }
 
+
+function magic_split_str($text, $length, $maxLength)
+{
+ //Text length
+ $textLength = strlen($text);
+
+//echo "text length ".$textLength;
+ //initialize empty array to store split text
+ $splitText = array();
+
+ //return without breaking if text is already short
+ if (!($textLength > $maxLength)){
+  $splitText[] = $text;
+  return $splitText;
+ }
+
+ //Guess sentence completion
+ $needle = '.';
+
+ /*iterate over $text length 
+   as substr_replace deleting it*/  
+ while (strlen($text) > $length){
+
+  $end = strpos($text, $needle, $length);
+
+  if ($end === false){
+
+   //Returns FALSE if the needle (in this case ".") was not found.
+   $splitText[] = substr($text,0);
+   $text = '';
+   break;
+
+  }
+
+  $end++;
+
+  $splitText[] = substr($text,0,$end);
+  $text = substr_replace($text,'',0,$end);
+
+ }
+ 
+ if ($text){
+  $splitText[] = substr($text,0);
+ }
+
+return $splitText;
+}
 ?>
