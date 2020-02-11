@@ -39,7 +39,7 @@ global $alert_box;
 
 $alert_box=
 magic_css().'<!-- The Modal -->
-	<div id="msg_alert_myModal" class="msg_alert_modal" onclick="this.style.display=\'none\';" style="z-index:99999;">
+	<div id="msg_alert_myModal" class="msg_alert_modal" onclick="this.style.display=\'none\';" style="z-index:999;">
 	  <!-- Modal content -->
 	   <div class="msg_modal-content ">
 	     <span class="msg_modalclose" onclick="document.getElementById(\'msg_alert_myModal\').style.display=\'none\';">&times;</span>
@@ -58,7 +58,7 @@ function magic_screen($message_to_display)
 
  $alert_box=
 magic_css().'<!-- The Modal -->
-	<div id="msg_alert_myModal" class="msg_alert_modal"style="z-index:99999;">
+	<div id="msg_alert_myModal" class="msg_alert_modal"style="z-index:999;">
 	  <!-- Modal content -->
 	  <div class="msg_modal-content">
 	    <span class="btn btn-primary" onclick="document.getElementById(\'msg_alert_myModal\').style.display=\'none\';" style="float:right;">&times;</span>
@@ -97,7 +97,7 @@ function magic_error_message($message_to_display)
 	global $alert_box;
 	$alert_box=
 		magic_css().'<!-- The Modal -->
-			<div id="msg_alert_myModal" class="msg_alert_modal" onclick="this.style.display=\'none\';" style="z-index:99999;">
+			<div id="msg_alert_myModal" class="msg_alert_modal" onclick="this.style.display=\'none\';" style="z-index:999;">
 			  <!-- Modal content -->
 			  <div class="msg_modal-content" style="background-color:darkred;">
 			    <span class="msg_modalclose" onclick="document.getElementById(\'msg_alert_myModal\').style.display=\'none\';">&times;</span>
@@ -486,7 +486,7 @@ function magic_destroy_file($file_path){
 
 
 //===================== begin calculate difference in days ================
-function magic_time_diff($first_d_m_y_h_i_s_a, $sec_d_m_y_h_i_s_a)
+function magic_time_diff_in_days($first_d_m_y_h_i_s_a, $sec_d_m_y_h_i_s_a)
 {
 	global $diff_in_days;
 
@@ -507,6 +507,54 @@ function magic_time_diff($first_d_m_y_h_i_s_a, $sec_d_m_y_h_i_s_a)
 	return $diff_in_days;
 }
 //===================== begin calculate difference in days ================
+
+//===================== begin calculate difference in secs ================
+function magic_time_diff_in_secs($first_d_m_y_h_i_s_a, $sec_d_m_y_h_i_s_a)
+{
+	global $diff_in_secs;
+
+	$first_date=DateTime::createFromFormat('d-m-Y h:i:s A', $first_d_m_y_h_i_s_a);
+	$formatted_first_date=$first_date->format('d-m-Y h:i:s A');
+
+	$second_date=DateTime::createFromFormat('d-m-Y h:i:s A', $sec_d_m_y_h_i_s_a);
+	$formatted_second_date=$second_date->format('d-m-Y h:i:s A');
+
+
+	$date1=date_create($formatted_first_date);
+	$date2=date_create($formatted_second_date);
+	$diff=date_diff($date1,$date2);
+
+	$diff_in_secs=$diff->format("%R%s");
+
+
+	return $diff_in_secs;
+}
+//===================== begin calculate difference in secs ================
+
+//===================== begin calculate difference in secs ================
+function magic_time_diff_in_hrs($first_d_m_y_h_i_s_a, $sec_d_m_y_h_i_s_a)
+{
+	global $diff_in_hrs;
+
+	$first_date=DateTime::createFromFormat('d-m-Y h:i:s A', $first_d_m_y_h_i_s_a);
+	$formatted_first_date=$first_date->format('d-m-Y h:i:s A');
+
+	$second_date=DateTime::createFromFormat('d-m-Y h:i:s A', $sec_d_m_y_h_i_s_a);
+	$formatted_second_date=$second_date->format('d-m-Y h:i:s A');
+
+
+	$date1=date_create($formatted_first_date);
+	$date2=date_create($formatted_second_date);
+	$diff=date_diff($date1,$date2);
+
+	$diff_in_hrs=$diff->format("%R%h");
+
+
+	return $diff_in_hrs;
+}
+//===================== begin calculate difference in secs ================
+
+
 
 
 //======== show current url ===============
@@ -2217,5 +2265,31 @@ function magic_split_str($text, $length, $maxLength)
  }
 
 return $splitText;
+}
+
+function magic_post_curl($curlopt_url, $curlopt_httpheader, $curlopt_userpwd, $curlopt_post_fields, $curlopt_customrequest)
+{
+	global $curl_post_response;
+
+	$new_curl_method='POST';
+	if($curlopt_customrequest!='')
+	{
+		$new_curl_method=$curlopt_customrequest;
+	}
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $curlopt_url);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $new_curl_method); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array($curlopt_httpheader));
+		curl_setopt($ch, CURLOPT_USERPWD, $curlopt_userpwd);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $curlopt_post_fields);
+
+		$curl_post_response = curl_exec($ch);
+
+	return $curl_post_response;
 }
 ?>
