@@ -2039,8 +2039,7 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
     $headers .= "Content-type: text/plain; charset=iso-8859-1\r\n";
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP". phpversion() ."\r\n";
-    $headers.='Content-type: text/plain; charset=iso-8859-1'. "\r\n";
-
+    $headers.='Content-type: text/html; charset=UTF-8'. "\r\n";
     mail($to_email, $subject, $message, $headers);        
 
 }
