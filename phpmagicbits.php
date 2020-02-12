@@ -2036,15 +2036,58 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
     $headers.=$returnpath;
     $headers .= "Organization: '.$bus_name.'\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-type: text/plain; charset=iso-8859-1\r\n";
+    $headers.='Content-type: text/html; charset=UTF-8'. "\r\n";
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP". phpversion() ."\r\n";
-    $headers.='Content-type: text/html; charset=UTF-8'. "\r\n";
     mail($to_email, $subject, $message, $headers);        
 
 }
 
+function magic_phpmailer($mail, $to, $frommail, $sender_name, $subject, $body, $attachments_json)
+{
+    /* Create a new PHPMailer object. Passing TRUE to the constructor enables exceptions. */
 
+/* Open the try/catch block. */
+try {
+   $mail->isHTML(TRUE);
+
+   /* Set the mail sender. */
+   $mail->setFrom($frommail, $sender_name);
+
+   /* Add a recipient. */
+   $mail->addAddress($to);
+
+   /* Set the subject. */
+   $mail->Subject = $subject;
+
+   /* Set the mail message body. */
+   $mail->Body =  $body;
+   
+    if($attachments_json!='')
+    {
+        $json_attatch_array = json_decode($attachments_json, true);
+
+	foreach ($json_attatch_array as $key => $value) 
+	{
+	   $mail->addAttachment($key, $json_attatch_array[$key]);
+	   
+	}
+	
+    }
+   /* Finally send the mail. */
+   $mail->send();
+}
+catch (Exception $e)
+{
+   /* PHPMailer exception. */
+   echo $e->errorMessage();
+}
+catch (\Exception $e)
+{
+   /* PHP exception (note the backslash to select the global namespace Exception class). */
+   echo $e->getMessage();
+}
+}
 
 function push_to_paypal($tel_no, $amount_ksh,$ref_no,$app_name,$app_logo_url,$app_slogan)
 
