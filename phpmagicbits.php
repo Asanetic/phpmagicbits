@@ -2010,10 +2010,12 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
 {
 	// create email headers
 	$replyto_mail="";
+	$returnpath="";
 
 	if($from_email!='')
 	{
-    	$replyto_mail='Reply-To: ' . $from_email . "\r\n";
+    	$replyto_mail='Reply-To: ' .$sender_name." ".$from_email . "\r\n";
+    	$returnpath.='Return-Path: ' .$sender_name." ".$from_email . "\r\n";
 	}
 
 	$busmail=$from_email;
@@ -2029,15 +2031,20 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
 		$bus_name="";
 	}
 
-
-    $headers = 'From: '.$bus_name.'<'.$busmail.'>' . "\r\n";
+    $headers = 'From: '.$bus_name.'<'.$busmail.'>' . "\r\n" .
     $headers.=$replyto_mail;
-    $headers.='Content-type: text/html; charset=iso-8859-1'. "\r\n";
-    $headers.='X-Mailer: PHP/' . phpversion();
+    $headers.=$returnpath;
+    $headers .= "Organization: '.$bus_name.'\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-type: text/plain; charset=iso-8859-1\r\n";
+    $headers .= "X-Priority: 3\r\n";
+    $headers .= "X-Mailer: PHP". phpversion() ."\r\n";
+    $headers.='Content-type: text/plain; charset=iso-8859-1'. "\r\n";
 
     mail($to_email, $subject, $message, $headers);        
 
 }
+
 
 
 function push_to_paypal($tel_no, $amount_ksh,$ref_no,$app_name,$app_logo_url,$app_slogan)
