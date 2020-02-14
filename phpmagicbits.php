@@ -700,6 +700,43 @@ function magic_sql_array_cols($tbl)
 
 }
 
+function magic_sql_json_cols($tbl)
+{
+	global $single_db;
+	global $single_conn;
+	global $columns_to_write;
+
+	$write_tbl_cols_query = mysqli_query($single_conn, "SHOW COLUMNS FROM `$single_db`.`$tbl`");
+
+	$tbl_primkey_query=mysqli_query($single_conn, "SHOW KEYS FROM `$single_db`.`$tbl` WHERE Key_name ='PRIMARY'");
+
+	$tbl_primkey_res=mysqli_fetch_array($tbl_primkey_query);
+
+	$tbl_primkey=$tbl_primkey_res['Column_name'];
+
+	$json_post_params=array();
+
+	while($write_tbl_cols_res = mysqli_fetch_array($write_tbl_cols_query)){
+
+
+		if($write_tbl_cols_res['Field']==$tbl_primkey)
+		{
+		$json_post_params[]='"'.$write_tbl_cols_res['Field'].'":"NULL"';
+
+		}else{
+		$json_post_params[]='"'.$write_tbl_cols_res['Field'].'":"?"';
+
+		}
+	}
+	
+	$json_post_params_finale='{'.implode(',', $json_post_params).'}';
+
+	$columns_to_write=$json_post_params_finale;
+
+	return $columns_to_write;
+
+}
+
 
 function magic_multisql_show_cols($conn, $db, $tbl)
 {
@@ -863,10 +900,7 @@ function magic_sql_params($file_path, $param_fields, $comment)
 
 }
 
-	function magic_post_value($postname)
-	{
 
-	}
 	function magic_validate_email ($input_validate_json,$message)
 	{
 
@@ -1855,7 +1889,7 @@ function magic_sql_count($tbl, $count_col, $where)
 	$where_clause=' WHERE '.$where.''; 
 
 	if($where=="")
-{
+	{
 
 		$where_clause="";
 	}
@@ -2036,7 +2070,7 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
     $headers.=$returnpath;
     $headers .= "Organization: '.$bus_name.'\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
-    $headers.='Content-type: text/html; charset=UTF-8'. "\r\n";
+    $headers.='Content-type: text/plain; charset=UTF-8'. "\r\n";
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP". phpversion() ."\r\n";
     mail($to_email, $subject, $message, $headers);        
@@ -2340,5 +2374,245 @@ function magic_post_curl($curlopt_url, $curlopt_httpheader, $curlopt_userpwd, $c
 		$curl_post_response = curl_exec($ch);
 
 	return $curl_post_response;
+}
+
+function magic_create_backend($newdbfile_path, $fileds_n_values_json, $tbl, $imgcol_path_json, $template_path)
+{	
+
+	global $single_db;
+	global $single_conn;
+	global $return_backend_str;
+
+	$tbl_primkey_query=mysqli_query($single_conn, "SHOW KEYS FROM `$single_db`.`$tbl` WHERE Key_name ='PRIMARY'");
+
+	$tbl_primkey_res=mysqli_fetch_array($tbl_primkey_query);
+
+	$tbl_primkey=$tbl_primkey_res['Column_name'];
+
+	//============
+	$json_inputs_array = json_decode($fileds_n_values_json, true);
+
+	$col_node_gen_q_str=array();
+
+	foreach ($json_inputs_array as $key => $value) 
+	{
+		if($key!=$tbl_primkey){
+			$col_node_gen_q_str[]='"'.$key.'":"\'.$gen_query_value.\'"';
+		}
+	}
+
+
+	$img_col="";
+	$img_path="";
+
+	if($imgcol_path_json!=''){
+	$json_img_array = json_decode($imgcol_path_json, true);
+
+	foreach ($json_img_array as $key => $value) 
+	{
+		$img_col=$key;
+		$img_path=$json_img_array[$key];
+
+	}
+	}
+
+
+	
+	$col_node_gen_q_str_prepared=implode(", ", $col_node_gen_q_str);
+	$col_node_update_str=str_replace('"'.$tbl_primkey.'":"NULL",', '', $fileds_n_values_json);
+	//=====
+
+
+	$mold_content=file_get_contents($template_path);
+
+	$tablename_replace=str_replace('TABLE_NAME', $tbl, $mold_content);
+	$primkey_replace=str_replace('<primkey>', $tbl_primkey, $tablename_replace);
+	$col_node_gen_q_replace=str_replace('<col_node_gen_data_query>', $col_node_gen_q_str_prepared, $primkey_replace);
+
+	$col_node_insert_json=str_replace('<col_node_insert_json>', $fileds_n_values_json, $col_node_gen_q_replace);
+	$col_node_update_json_replace=str_replace('<col_node_update_json>', $col_node_update_str, $col_node_insert_json);
+	$pic_path_replace=str_replace('<PUT_PHOTO_PATH_HERE>', $img_path, $col_node_update_json_replace);
+	$pic_txt_replace=str_replace('<PUT_FILE_INPUT_NAME_HERE>', 'txt_'.$img_col, $pic_path_replace);
+	$pic_col_path_replace=str_replace('<OLD_PHOTO_PATH_HERE>', '$'.$tbl.'_node["'.$img_col.'"]', $pic_txt_replace);
+	$pic_col_replace=str_replace('<PHOTO_COLUMN_HERE>', $img_col, $pic_col_path_replace);
+
+	if($newdbfile_path!=''){
+		magic_write_to_file($newdbfile_path, $pic_col_replace);
+	}
+	return $pic_col_replace;
+}
+
+
+function magic_create_form_ui($newfilename, $tbl, $fileds_n_values_json, $rows_per_grid, $grid_class)
+{
+
+	global $single_db;
+	global $single_conn;
+	global $return_profile_ui_str;
+
+	$tbl_primkey_query=mysqli_query($single_conn, "SHOW KEYS FROM `$single_db`.`$tbl` WHERE Key_name ='PRIMARY'");
+
+	$tbl_primkey_res=mysqli_fetch_array($tbl_primkey_query);
+
+	$tbl_primkey=$tbl_primkey_res['Column_name'];
+
+
+
+	$json_inputs_array = json_decode($fileds_n_values_json, true);
+
+	$template_str=array();
+
+	foreach ($json_inputs_array as $key => $value) 
+	{
+		if($key!=$tbl_primkey)
+		{
+
+
+		if($json_inputs_array[$key]=="?"){
+
+			$label_node=ucwords(str_replace("_", " ", strtolower($key)));
+
+		}else{
+
+			$label_node=$json_inputs_array[$key];
+		}
+			$template_str[]=
+			' <div class="form-group">'.PHP_EOL.
+		    '  <label >'.$label_node.'</label>'.PHP_EOL.
+		    '  <input class="form-control" id="txt_'.$key.'" name="txt_'.$key.'" value="<?php echo $'.$tbl.'_node["'.$key.'"];?>" placeholder="'.$label_node.'" type="text">'.PHP_EOL.
+		  	' </div>';
+		}
+	}
+
+	$prepared_form_inputs=$template_str;
+
+	$grid_capsule="";
+	
+	$size = sizeof($prepared_form_inputs);
+
+	$i=0;
+	while($i<$size-1){
+	      $i++;
+	if ($i%$rows_per_grid ==1):
+	$grid_capsule.=PHP_EOL.
+	'<div class="'.$grid_class.'">'.PHP_EOL;
+	endif;
+	 $grid_capsule.=
+	 ''.$prepared_form_inputs[$i].PHP_EOL;
+	 if ($i%$rows_per_grid ==0):
+	 $grid_capsule.=PHP_EOL.'
+	</div>'.PHP_EOL;
+	 endif;
+	}
+	if ($i%$rows_per_grid != 0) 
+	$grid_capsule.=PHP_EOL.'</div>'.PHP_EOL;
+
+	$button_str='                   
+		<div align="center" style="width: 98%">
+			<?php if(!isset($_GET[\'editoken\'])) echo magic_button("btn_add_new_'.$tbl.'","Proceed","");?>
+			<?php if(isset($_GET[\'editoken\'])) echo magic_button("btn_save_'.$tbl.'_changes","Save Changes","");?>
+		</div>';
+	$row_div_top='<div class="row">';
+
+	$row_div_bottom=$button_str.PHP_EOL.
+	'</div>';
+
+	if($newfilename!='')
+	{
+		magic_write_to_file($newfilename, $row_div_top.$grid_capsule.$row_div_bottom);
+	}
+	$return_profile_ui_str=$grid_capsule;
+
+	return $return_profile_ui_str;
+
+}
+
+function magic_create_table_ui($newfilename, $tbl, $fileds_n_values_json)
+{
+	global $single_db;
+	global $single_conn;
+	global $return_table_ui_str;
+
+	$tbl_primkey_query=mysqli_query($single_conn, "SHOW KEYS FROM `$single_db`.`$tbl` WHERE Key_name ='PRIMARY'");
+
+	$tbl_primkey_res=mysqli_fetch_array($tbl_primkey_query);
+
+	$tbl_primkey=$tbl_primkey_res['Column_name'];
+
+
+
+	$json_inputs_array = json_decode($fileds_n_values_json, true);
+
+	$template_head_str='';
+	$template_cell_str='';
+
+	foreach ($json_inputs_array as $key => $value) 
+	{
+		if($key!=$tbl_primkey)
+		{
+
+
+		if($json_inputs_array[$key]=="?"){
+
+			$label_node=ucwords(str_replace("_", " ", strtolower($key)));
+
+		}else{
+
+			$label_node=$json_inputs_array[$key];
+		}
+			$template_head_str.=
+			' <th scope="col">'.$label_node.'</td>'.PHP_EOL;
+			$template_cell_str.=
+			' <td scope="col"><?php echo $list'.$tbl.'_result["'.$key.'"];?></td>'.PHP_EOL;
+
+		}
+
+
+	}
+
+
+	$return_table_ui_str='
+    <div align="left">
+    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
+	</div>
+	<div class="table-responsive data-tables" style="background-color: #FFF; margin-top: 20px; padding-bottom: 150px;">
+	<?php echo $nobusinesses?>
+	<table class="table table-hover text-left" id="'.$tbl.'_data_table">
+	    <thead class="text-uppercase">
+		   <tr>
+		    <th scope="col">#</th>
+				'.$template_head_str.'
+		   </tr>
+	    </thead>
+	    <tbody>
+		<?php 
+		$pagination_record_count=$list'.$tbl.'[1];
+        $i=0;
+		while($list'.$tbl.'_result=mysqli_fetch_array($list'.$tbl.'[0])){
+	        $i++;
+
+	        $edit_drop_link=magic_link(\'./edit'.$tbl.'.php?editoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'\',\'<i class="fa fa-edit"></i> Edit\', \'\');
+
+	        $delete_drop_link=magic_link(\'./edit'.$tbl.'.php?editoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');
+
+	        $dropdown_items =$edit_drop_link.$delete_drop_link;
+        ?>
+	    <tr>
+	    <td scope="col"><?php echo magic_dropdown($i, $dropdown_items, \'no\')?></td>
+			'.$template_cell_str.'
+	    </tr>
+	    <?php }?>
+	    </tbody>
+	    </table>
+	 <hr>
+	 <?php include("./pagination.php");?>
+	</div>';
+
+	if($newfilename!='')
+	{
+		magic_write_to_file($newfilename, $return_table_ui_str);
+	}
+
+	return $return_table_ui_str;
 }
 ?>
