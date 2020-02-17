@@ -36,14 +36,14 @@ $gen_query_str=magic_sql_where_like('{<col_node_gen_data_query>}');
 $listTABLE_NAME= magic_sql_select('TABLE_NAME', $gen_query_str, $datalimit, '<primkey>', 'DESC');
 
 }else{
-	$listTABLE_NAME= magic_sql_select('TABLE_NAME', $admin_id_filter, $datalimit, '<primkey>', 'DESC');
+	$listTABLE_NAME= magic_sql_select('TABLE_NAME', '', $datalimit, '<primkey>', 'DESC');
 }
 //END LISTING DATA RECORDS 
 
 
 //=======BEGIN COUNT DATA RECORDS
  //(ON EMPTY RESULTS ECHO $noTABLE_NAME  TO DISPLAY ADD NEW RECORD BUTTON) 
-$count_TABLE_NAME=magic_sql_count('TABLE_NAME','<primkey>', $admin_id_filter);
+$count_TABLE_NAME=magic_sql_count('TABLE_NAME','<primkey>', '');
 
 $noTABLE_NAME="";
 
@@ -53,7 +53,7 @@ if($count_TABLE_NAME==0){
 //=======END COUNT DATA RECORDS
 
 //=========================== BEGIN SELECT SINGLE ROW RECORD USING GET PRIMARY KEY  
-$TABLE_NAME_node= magic_sql_row('TABLE_NAME', $token_filter, '<primkey>', 'DESC');
+$TABLE_NAME_node= magic_sql_row_data('TABLE_NAME', $token_filter, '<primkey>', 'DESC');
 
 //=========================== END SELECT SINGLE ROW RECORD USING GET PRIMARY KEY  
 
