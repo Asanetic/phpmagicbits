@@ -27,8 +27,12 @@
  * @DOCUMENTATION : https://github.com/Asanetic/phpmagicbits/blob/master/README.md
 */
 
-
-
+function magic_str_to_url($string, $title, $additional_attr) 
+{
+  return preg_replace(
+  '%(https?|ftp)://([-A-Z0-9./_*?&;=#]+)%i',
+  '<a href="$0" '.$additional_attr.' >'.$title.'</a>', $string);
+}
 
 
 //====================== create message pop ups ==========================
@@ -813,13 +817,16 @@ function magic_write_to_file($file_path, $new_content_to_write)
 
 	global $final_file_content;
   
+  if (!file_exists($file_path))
+  {
   	$file_to_write = fopen($file_path, 'w') or die("can't open file");
 	fwrite($file_to_write, $new_content_to_write);
 	fclose($file_to_write);
 
-
 	$final_file_content=file_get_contents($file_path);
-
+  }else{
+  	echo "<h2>Sorry Cannot Overwrite an existing file on magic_write_to_file(".$file_path.") </h2> ";
+  }
 
 	return $final_file_content;
 
@@ -1781,6 +1788,53 @@ $return_data=mysqli_fetch_array($cell_data_query);
 return $return_data;
 
 }
+
+function magic_multisql_row_data($conn, $db, $tbl, $where, $orderby_col, $ordertype)
+{
+
+	global $return_data;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where==""){
+
+		$where_clause="";
+	}
+
+
+$cell_data_query=mysqli_query($conn, "SELECT * FROM `$db`.`$tbl`  ".$where_clause." ORDER BY `$orderby_col` $ordertype");
+
+$return_data=mysqli_fetch_array($cell_data_query);
+
+
+
+return $return_data;
+
+}
+
+function magic_sql_row_data($tbl, $where, $orderby_col, $ordertype)
+{
+	global $single_db;
+	global $single_conn;
+	global $return_data;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where==""){
+
+		$where_clause="";
+	}
+
+
+$cell_data_query=mysqli_query($single_conn, "SELECT * FROM `$single_db`.`$tbl`  ".$where_clause." ORDER BY `$orderby_col` $ordertype");
+
+$return_data=mysqli_fetch_array($cell_data_query);
+
+
+
+return $return_data;
+
+}
 //------------------------- END cell select query--------//
 
 
@@ -1904,6 +1958,56 @@ $tot_count=$count_totals_res['TOT_COUNT'];
 return $tot_count;
 
 }
+function magic_sql_count_max($tbl, $count_col, $where)
+{
+	global $single_db;
+	global $single_conn;
+	global $tot_count;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+	{
+
+		$where_clause="";
+	}
+
+
+$count_totals_query=mysqli_query($single_conn, "SELECT count($count_col) AS TOT_COUNT, $count_col FROM `$single_db`.`$tbl` ".$where_clause." GROUP BY $count_col ORDER BY COUNT($count_col) DESC LIMIT 1");
+
+$count_totals_res=mysqli_fetch_array($count_totals_query);
+
+$tot_count=array($count_totals_res[$count_col], $count_totals_res['TOT_COUNT']);
+
+return $tot_count;
+
+}
+
+function magic_sql_count_min($tbl, $count_col, $where)
+{
+	global $single_db;
+	global $single_conn;
+	global $tot_count;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+	{
+
+		$where_clause="";
+	}
+
+
+$count_totals_query=mysqli_query($single_conn, "SELECT count($count_col) AS TOT_COUNT, $count_col FROM `$single_db`.`$tbl` ".$where_clause." GROUP BY $count_col ORDER BY COUNT($count_col) ASC LIMIT 1");
+
+$count_totals_res=mysqli_fetch_array($count_totals_query);
+
+$tot_count=array($count_totals_res[$count_col], $count_totals_res['TOT_COUNT']);
+
+return $tot_count;
+
+}
+
 
 function magic_multisql_count($conn, $db, $tbl, $count_col, $where)
 {
@@ -1924,6 +2028,54 @@ $count_totals_query=mysqli_query($conn, "SELECT count($count_col) AS TOT_COUNT F
 $count_totals_res=mysqli_fetch_array($count_totals_query);
 
 $tot_count=$count_totals_res['TOT_COUNT'];
+
+return $tot_count;
+
+}
+
+function magic_multisql_count_max($conn, $db, $tbl, $count_col, $where)
+{
+
+	global $tot_count;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+{
+
+		$where_clause="";
+	}
+
+
+$count_totals_query=mysqli_query($conn, "SELECT count($count_col) AS TOT_COUNT, $count_col FROM `$db`.`$tbl` ".$where_clause." GROUP BY $count_col ORDER BY COUNT($count_col) DESC LIMIT 1");
+
+$count_totals_res=mysqli_fetch_array($count_totals_query);
+
+$tot_count=array($count_totals_res[$count_col], $count_totals_res['TOT_COUNT']);
+
+return $tot_count;
+
+}
+
+function magic_multisql_count_min($conn, $db, $tbl, $count_col, $where)
+{
+
+	global $tot_count;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+{
+
+		$where_clause="";
+	}
+
+
+$count_totals_query=mysqli_query($conn, "SELECT count($count_col) AS TOT_COUNT, $count_col FROM `$db`.`$tbl` ".$where_clause." GROUP BY $count_col ORDER BY COUNT($count_col) ASC LIMIT 1");
+
+$count_totals_res=mysqli_fetch_array($count_totals_query);
+
+$tot_count=array($count_totals_res[$count_col], $count_totals_res['TOT_COUNT']);
 
 return $tot_count;
 
@@ -2045,11 +2197,12 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
 	// create email headers
 	$replyto_mail="";
 	$returnpath="";
+	$headers="";
 
 	if($from_email!='')
 	{
-    	$replyto_mail='Reply-To: ' .$sender_name." ".$from_email . "\r\n";
-    	$returnpath.='Return-Path: ' .$sender_name." ".$from_email . "\r\n";
+    	$replyto_mail='Reply-To: ' .$sender_name." <".$from_email.">\r\n";
+    	$returnpath='Return-Path: ' .$sender_name." <".$from_email.">\r\n";
 	}
 
 	$busmail=$from_email;
@@ -2068,13 +2221,13 @@ function magic_send_mail($to_email, $from_email, $sender_name, $subject, $messag
     $headers = 'From: '.$bus_name.'<'.$busmail.'>' . "\r\n" .
     $headers.=$replyto_mail;
     $headers.=$returnpath;
-    $headers .= "Organization: '.$bus_name.'\r\n";
+    $headers .= "Organization: ".$bus_name."\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
-    $headers.='Content-type: text/plain; charset=UTF-8'. "\r\n";
+    $headers.='Content-type: text/html; charset=UTF-8'. "\r\n";
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP". phpversion() ."\r\n";
-    mail($to_email, $subject, $message, $headers);        
-
+   
+   mail($to_email, $subject, $message, $headers);        
 }
 
 function magic_phpmailer($mail, $to, $frommail, $sender_name, $subject, $body, $attachments_json)
@@ -2422,9 +2575,12 @@ function magic_create_backend($newdbfile_path, $fileds_n_values_json, $tbl, $img
 	$col_node_update_str=str_replace('"'.$tbl_primkey.'":"NULL",', '', $fileds_n_values_json);
 	//=====
 
-
-	$mold_content=file_get_contents($template_path);
-
+	if($template_path=='')
+	{
+		$mold_content=file_get_contents('https://raw.githubusercontent.com/Asanetic/phpmagicbits/master/backend_template.php');
+	}else{
+		$mold_content=file_get_contents($template_path);
+	}
 	$tablename_replace=str_replace('TABLE_NAME', $tbl, $mold_content);
 	$primkey_replace=str_replace('<primkey>', $tbl_primkey, $tablename_replace);
 	$col_node_gen_q_replace=str_replace('<col_node_gen_data_query>', $col_node_gen_q_str_prepared, $primkey_replace);
@@ -2443,7 +2599,7 @@ function magic_create_backend($newdbfile_path, $fileds_n_values_json, $tbl, $img
 }
 
 
-function magic_create_form_ui($newfilename, $tbl, $fileds_n_values_json, $rows_per_grid, $grid_class)
+function magic_create_form_ui($newfilename,  $fileds_n_values_json, $tbl, $rows_per_grid, $grid_class)
 {
 
 	global $single_db;
@@ -2512,7 +2668,12 @@ function magic_create_form_ui($newfilename, $tbl, $fileds_n_values_json, $rows_p
 			<?php if(!isset($_GET[\'editoken\'])) echo magic_button("btn_add_new_'.$tbl.'","Proceed","");?>
 			<?php if(isset($_GET[\'editoken\'])) echo magic_button("btn_save_'.$tbl.'_changes","Save Changes","");?>
 		</div>';
-	$row_div_top='<div class="row">';
+
+	$edit_butons='       
+    <?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
+
+	<?php if(isset($_GET[\'editoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?editoken=\'.($_GET["editoken"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');?>';
+	$row_div_top=$edit_butons.PHP_EOL.'<div class="row" style="background-color: #FFF; padding: 20px;">';
 
 	$row_div_bottom=$button_str.PHP_EOL.
 	'</div>';
@@ -2523,11 +2684,11 @@ function magic_create_form_ui($newfilename, $tbl, $fileds_n_values_json, $rows_p
 	}
 	$return_profile_ui_str=$grid_capsule;
 
-	return $return_profile_ui_str;
+	return $return_profile_ui_str." Key ".$tbl_primkey;
 
 }
 
-function magic_create_table_ui($newfilename, $tbl, $fileds_n_values_json)
+function magic_create_table_ui($newfilename, $fileds_n_values_json, $tbl)
 {
 	global $single_db;
 	global $single_conn;
@@ -2576,7 +2737,7 @@ function magic_create_table_ui($newfilename, $tbl, $fileds_n_values_json)
     	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
 	</div>
 	<div class="table-responsive data-tables" style="background-color: #FFF; margin-top: 20px; padding-bottom: 150px;">
-	<?php echo $nobusinesses?>
+	<?php echo $no'.$tbl.'?>
 	<table class="table table-hover text-left" id="'.$tbl.'_data_table">
 	    <thead class="text-uppercase">
 		   <tr>
@@ -2615,4 +2776,28 @@ function magic_create_table_ui($newfilename, $tbl, $fileds_n_values_json)
 
 	return $return_table_ui_str;
 }
+
+  function magic_page_title($url)
+   {
+  	global $title;
+        $fp = file_get_contents($url);
+        if (!$fp) 
+            return null;
+
+        $res = preg_match("/<title>(.*)<\/title>/siU", $fp, $title_matches);
+        if (!$res) 
+            return null; 
+
+        // Clean up title: remove EOL's and excessive whitespace.
+        $title = preg_replace('/\s+/', ' ', $title_matches[1]);
+        $title = trim($title);
+        return $title;
+    }
+
+
+
+
+
+
+
 ?>
