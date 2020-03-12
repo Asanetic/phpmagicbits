@@ -825,7 +825,7 @@ function magic_write_to_file($file_path, $new_content_to_write)
 
 	$final_file_content=file_get_contents($file_path);
   }else{
-  	echo "<h2>Sorry Cannot Overwrite an existing file on magic_write_to_file(".$file_path.") </h2> ";
+  	echo "<h2>Sorry, File Overwrite is not allowed, a similar file '".$file_path."'  already exists. Delete this file before creating a new one. </h2> ";
   }
 
 	return $final_file_content;
@@ -1395,8 +1395,23 @@ function magic_clean_str($str)
 
 	global $clean_str;
 
-    $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
-    $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
+   $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a", "\x09", "x0c", "\0", "\x08", "x0c");
+   $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z", "\\t","\\r", "\\0", "\\b");
+
+
+    $clean_str= str_replace($search, $replace, $str);
+
+    return $clean_str;
+}
+  
+
+function magic_clean_json_str($str)
+{
+
+	global $clean_str;
+
+    $search = array("\\",  "\x00", "\n",  "\r", '"', "\x1a", "\x09", "x0c", "\0", "\x08", "x0c");
+    $replace = array("\\\\","\\0","\\n", "\\r",  '\"', "\\Z", "\\t","\\r", "\\0", "\\b");
 
     $clean_str= str_replace($search, $replace, $str);
 
