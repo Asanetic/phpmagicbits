@@ -1852,6 +1852,24 @@ return $return_data;
 }
 //------------------------- END cell select query--------//
 
+function magic_sql_show_tables($dbname)
+{
+	global $db_tables;
+	global $single_conn;
+
+$table_array=array();
+
+$db_tables_list = mysqli_query($single_conn, "SHOW TABLES FROM `$dbname`");
+
+while($db_tables_list_r=mysqli_fetch_array($db_tables_list))
+{
+$table_array[]= $db_tables_list_r[0];
+}
+
+$db_tables=implode(",", $table_array);
+
+return $db_tables;
+}
 
 //------------------------- START cell Delete query--------//
 
