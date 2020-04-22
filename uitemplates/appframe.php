@@ -12,9 +12,9 @@
 <?php include("{header_css_scripts}");?>
 </head>
 
-<body>
+<body style="background-image: url('{background_image}');">
 <?php include("{navbar_path}");?>
-    <main role="main" class="container-fluid">
+    <main role="main" class="container-fluid skin_plasma">
 
       <div class="row mt-5 pt-5 justify-content-center">
         <h2>Content Here<hr></h2>
