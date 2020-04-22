@@ -18,7 +18,7 @@
 
       <div class="row mt-5 pt-5 justify-content-center">
         <h2>{page_title}<hr></h2>
-          //==<{ncgh}/>  - new code will replace this tag. Pleace it where you want the terminal to write new code
+          <!--<{ncgh}/>  - new code will replace this tag. Pleace it where you want the terminal to write new code-->
           <{ncgh}/>
       </div>
 
