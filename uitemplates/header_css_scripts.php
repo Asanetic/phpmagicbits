@@ -16,7 +16,7 @@ background-color: rgba(255,255,255,0.7)
 
 .padding_row
 {
-margin-top: 100px!important;
+margin-top: 50px!important;
 }
 
 .padding_row_gen
@@ -28,7 +28,7 @@ margin-top: 100px!important;
 {
 .padding_row
 {
-margin-top: 100px!important;
+margin-top: 150px!important;
 }
 
 .padding_row_gen
