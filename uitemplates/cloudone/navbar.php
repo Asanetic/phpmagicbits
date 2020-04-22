@@ -7,7 +7,10 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-        {app_navlinks}
+            <li class="nav-item">
+                <a class="nav-link" href="#">{app_navlinks}</a>
+            </li>
+       
         </ul>
         <div class="mr-2"> 
           <img src="./img/noavatar.jpeg" class="border" style="width: 40px; height: 40px; border-radius: 50%;" />
