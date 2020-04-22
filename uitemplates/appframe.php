@@ -23,9 +23,8 @@
     </main><!-- /.container -->
 
 
- <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+ <!-- Bootstrap core JavaScript -->
+ <!-- Placed at the end of the document so the pages load faster -->
     
 <?php include("{footer_path}");?>
     
