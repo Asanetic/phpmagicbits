@@ -3,7 +3,6 @@
     
  body
 {
-    background-image: url(https://png.pngtree.com/thumb_back/fw800/back_pic/03/88/05/6257d3f69589b07.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
