@@ -10,7 +10,7 @@
 
 .skin_plasma
 {
-height: 100vh;
+height: auto;
 background-color: rgba(255,255,255,0.7)
 }
 
