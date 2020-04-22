@@ -13,7 +13,7 @@
        
         </ul>
         <div class="mr-2"> 
-          <img src="./img/noavatar.jpeg" class="border" style="width: 40px; height: 40px; border-radius: 50%;" />
+          <img src="https://raw.githubusercontent.com/Asanetic/phpmagicbits/master/uitemplates/noavatar.jpeg" class="border" style="width: 40px; height: 40px; border-radius: 50%;" />
           Welcome John doe | <a href="#" class="link">Logout</a>
         </div>
     </div>
