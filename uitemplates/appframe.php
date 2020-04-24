@@ -16,7 +16,7 @@ ob_start();
 </head>
 
 <body style="background-image: url('{background_image}');">
-<?php include("{navbar_path}");?>
+{navbar_path}
     <main role="main" class="container-fluid skin_plasma padding_row">
 
       <div class="row mt-5 pt-5 justify-content-center">
