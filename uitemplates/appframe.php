@@ -12,7 +12,7 @@ ob_start();
     <title>{page_title}</title>
 
     <!-- Bootstrap core CSS -->
-<?php include("{header_css_scripts}");?>
+{header_css_scripts}
 </head>
 
 <body style="background-image: url('{background_image}');">
@@ -31,7 +31,7 @@ ob_start();
  <!-- Bootstrap core JavaScript -->
  <!-- Placed at the end of the document so the pages load faster -->
     
-<?php include("{footer_path}");?>
+{footer_path}
     
 </body>
 </html>
