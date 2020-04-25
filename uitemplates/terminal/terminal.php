@@ -13,8 +13,6 @@ $col_script_sample="
 `message_date` varchar(500) NOT NULL,
 `client_note` TEXT NOT NULL";
 
-include("./dtc/dataconfig.php");
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
