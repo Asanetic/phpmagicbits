@@ -3,6 +3,17 @@ ob_start();
 
 session_start();
 
+//=========
+$col_script_sample="
+`primkey` int(255) PRIMARY KEY AUTO_INCREMENT,
+`msgid` varchar(500) NOT NULL,
+`client_name` varchar(500) NOT NULL,
+`client_mobile` varchar(500) NOT NULL,
+`client_email` varchar(500) NOT NULL,
+`message_date` varchar(500) NOT NULL,
+`client_note` TEXT NOT NULL";
+
+include("./dtc/dataconfig.php");
 
 ?>
 <!DOCTYPE html>
@@ -13,7 +24,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Magic Terminal</title>
+    <title>Terminal X</title>
 
     <!-- Bootstrap core CSS -->
 <style>
@@ -36,16 +47,20 @@ session_start();
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+a{
+  color: #FFF;
+}
 </style>
 </head>
 
-<body style="background-image: url('./alien.jpg'); background-size: cover; color: #FFF;">
+<body style="background-image: url('./img/alien.jpg'); background-size: cover; color: #FFF;">
 <form method="post">
       <div style="text-align: center;">
-        <h4 class="col-md-12" style="text-align: center;">Magic Terminal<br><br></h2>
+        <h4 class="col-md-12" style="text-align: center;">Terminal X<br><br></h2>
         <?php if(isset($_POST['btn_exec_command'])){?>
             
-             <a href="./index.php" type="submit" style="position: fixed; right: 20px; color: #FFF;">Refresh</a>
+             <a href="./terminal.php" type="submit" style="position: fixed; right: 20px; color: #FFF;">Refresh</a>
     <?php }?>
           <!-- <{ncgh}/> - new code will replace this tag. Pleace it where you want the terminal to write new code-->
           <div align="center" style="width: 100%">
@@ -53,7 +68,7 @@ session_start();
  
         <?php 
 
-            include("./phpmagicbits.php");
+            include("./includes/phpmagicbits.php");
 
             function help()
             {
@@ -62,8 +77,8 @@ session_start();
 
 
 
-          include("./phpmagicui.php");
-          include("./phpmagicbackend.php");
+          include("./includes/phpmagicui.php");
+          include("./includes/phpmagicbackend.php");
           ?>
           <div style="max-height: 350px; overflow-y: scroll;">
             <code>

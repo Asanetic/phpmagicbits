@@ -264,14 +264,14 @@ if ($i%$rows_per_grid ==1){
 
 	$button_str='                   
 		<div align="center" style="width: 98%">
-			<?php if(!isset($_GET[\'editoken\'])) echo magic_button("btn_add_new_'.$tbl.'","Proceed","");?>
-			<?php if(isset($_GET[\'editoken\'])) echo magic_button("btn_save_'.$tbl.'_changes","Save Changes","");?>
+			<?php if(!isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button("'.$tbl.'_insert_btn","Proceed","");?>
+			<?php if(isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button("'.$tbl.'_update_btn","Save Changes","");?>
 		</div>'.PHP_EOL;
 
 	$edit_butons='       
     <?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
 
-	<?php if(isset($_GET[\'editoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?editoken=\'.($_GET["editoken"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');?>'.PHP_EOL;
+	<?php if(isset($_GET[\'editoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.($_GET["'.$tbl.'_uptoken"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');?>'.PHP_EOL;
 
 	}else{
 	
@@ -298,13 +298,13 @@ if ($i%$rows_per_grid ==1){
 }
 
 
-function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file)
+function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file, $edit_key)
 {
 
 	global $return_table_ui_str;
 
 
-	$tbl_primkey="dummy_primkey";
+	$tbl_primkey=$edit_key;
 
 
 
@@ -343,7 +343,6 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
     	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
 	</div>
 	<div class="table-responsive data-tables" style="background-color: #FFF; margin-top: 20px; padding-bottom: 150px;">
-	<?php echo $no'.$tbl.'?>
 	<table class="table table-hover text-left" id="'.$tbl.'_data_table">
 	    <thead class="text-uppercase">
 		   <tr>
@@ -396,6 +395,8 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 }
 
 
+
+
 function fend_help()
 {
 	$help_functions='
@@ -415,7 +416,15 @@ function fend_help()
 
 	//====create bootstrap table 
 
- 	create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file);';
+ 	create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file);
+
+ 	//clone any file or write a file
+
+ 	ui_write_to_file($file_path, $new_content_to_write);
+
+ 	';
+
+
 
 	return nl2br($help_functions);
 
