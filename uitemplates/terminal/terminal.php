@@ -52,7 +52,7 @@ a{
 </style>
 </head>
 
-<body style="background-image: url('./img/alien.jpg'); background-size: cover; color: #FFF;">
+<body style="background-image: url('./alien.jpg'); background-size: cover; color: #FFF;">
 <form method="post">
       <div style="text-align: center;">
         <h4 class="col-md-12" style="text-align: center;">Terminal X<br><br></h2>
@@ -66,7 +66,7 @@ a{
  
         <?php 
 
-            include("./includes/phpmagicbits.php");
+            include("./phpmagicbits.php");
 
             function help()
             {
@@ -75,8 +75,8 @@ a{
 
 
 
-          include("./includes/phpmagicui.php");
-          include("./includes/phpmagicbackend.php");
+          include("./phpmagicui.php");
+          include("./phpmagicbackend.php");
           ?>
           <div style="max-height: 350px; overflow-y: scroll;">
             <code>
