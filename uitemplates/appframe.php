@@ -20,7 +20,7 @@ ob_start();
     <main role="main" class="container-fluid skin_plasma padding_row">
 
       <div class="row mt-5 pt-5 justify-content-center">
-        <h4 class="col-md-12" style="text-align: center;">{page_title}<br><br></h2>
+        <h4 class="col-md-12" style="text-align: center;">{page_title}<br><br></h4>
           <!-- <{ncgh}/> - new code will replace this tag. Pleace it where you want the terminal to write new code-->
           <!--<{ncgh}/>-->
       </div>
