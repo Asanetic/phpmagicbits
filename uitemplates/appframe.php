@@ -16,6 +16,7 @@ ob_start();
 </head>
 
 <body style="background-image: url('{background_image}');">
+    <form method="post" enctype="multipart/form-data">
 {navbar_path}
     <main role="main" class="container-fluid skin_plasma padding_row">
 
@@ -32,6 +33,6 @@ ob_start();
  <!-- Placed at the end of the document so the pages load faster -->
     
 {footer_path}
-    
+    </form>
 </body>
 </html>
