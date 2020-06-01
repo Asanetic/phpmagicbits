@@ -68,7 +68,7 @@ function bend_write_to_file($file_path, $new_content_to_write)
 
 	$final_file_content=file_get_contents($file_path);
 
-	echo "<h2><u>File Succesfully created on ".$file_path."</u></h2>";
+	echo '<h2><u>File Succesfully created on <a href="'.$file_path.'"  target="_blank">'.$file_path.'</a></u></h2>';
   }else{
   	echo "<h2>Sorry, File Overwrite is not allowed, a similar file '".$file_path."'  already exists. Delete this file before creating a new one. </h2> ";
   }
@@ -272,7 +272,7 @@ $'.$tbl.'_pgcount=$'.$tbl.'_pagination["1"];';
 
 $gen_select_query.=PHP_EOL.PHP_EOL.'//=== start '.$tbl.' select  '.$comment.' list  '.PHP_EOL.PHP_EOL.'$'.$tbl.'_list_query=mysqli_query($mysqliconn, "SELECT * FROM `$'.$db.'`.`'.$tbl.'` '.$where_clause.' ORDER BY `'.$orderby_col.'` '.$ordertype.' LIMIT $'.$tbl.'_firstproduct, $datalimit" );
 
-$'.$tbl.'_list_res=mysqli_fetch_array($'.$tbl.'_list_query);'.PHP_EOL.PHP_EOL.'//=== End '.$tbl.' select  '.$comment.' list'.PHP_EOL.'//--<{ncgh}/>';
+//$'.$tbl.'_list_res=mysqli_fetch_array($'.$tbl.'_list_query);'.PHP_EOL.PHP_EOL.'//=== End '.$tbl.' select  '.$comment.' list'.PHP_EOL.'//--<{ncgh}/>';
 
 	if($file_path!='')
 	{
@@ -300,7 +300,7 @@ if($where_str!='')
 {
 $where_clause=' WHERE '.$where_str;
 }else{
-$where_clause='';
+$where_clause='WHERE `'.$orderby_col.'`=\'$'.$tbl.'_uptoken\'';
 }
 
 $params_name=str_replace(" ", "_", strtolower($comment));
@@ -308,6 +308,125 @@ $params_name=str_replace(" ", "_", strtolower($comment));
 $gen_select_query=PHP_EOL.PHP_EOL.'//=== start '.$tbl.' select '.$comment.' query '.PHP_EOL.PHP_EOL.'$'.$params_name."_".$tbl.'_query=mysqli_query($mysqliconn, "SELECT * FROM `$'.$db.'`.`'.$tbl.'` '.$where_clause.' ORDER BY `'.$orderby_col.'` '.$ordertype.' LIMIT 1" );
 
 $'.$tbl.'_node=mysqli_fetch_array($'.$params_name."_".$tbl.'_query);'.PHP_EOL.PHP_EOL.'//=== End '.$tbl.' select '.$comment.'  query'.PHP_EOL.'//--<{ncgh}/>';
+
+	if($file_path!='')
+	{
+		if($create_new_file=='yes'){
+
+
+			bend_write_to_file($file_path, $gen_select_query);
+		
+		}else{
+
+			bend_replace_file_section($file_path, '//--<{ncgh}/>', $gen_select_query);
+
+
+		}
+
+
+	}
+}
+
+
+function full_bend_select_str($db, $tbl, $where_str, $param_fields, $file_path, $create_new_file, $orderby_col, $ordertype, $comment)
+{
+
+if($where_str!='')
+{
+$additional_where_clause=' AND  '.$where_str;
+}else{
+$additional_where_clause='';
+}
+
+if($where_str!='')
+{
+$where_clause=' WHERE  '.$where_str;
+}else{
+$where_clause='';
+}
+
+	foreach ($param_fields as $fields) 
+	{
+
+
+			$magic_where_str[]='`'.$fields.'` LIKE \'%".$q'.$tbl.'."%\'';
+
+	}
+
+	$prepared_where_str=implode(" OR  ", $magic_where_str);
+
+	$where_like_str=" WHERE (".$prepared_where_str.")";
+
+
+$params_name=str_replace(" ", "_", strtolower($comment));
+
+$gen_select_query=PHP_EOL.PHP_EOL.'
+
+if(isset($_POST["q'.$tbl.'_btn"])){
+
+
+$q'.$tbl.'_str=base64_encode($_POST["txt_'.$tbl.'"]);
+
+
+header(\'location:./\'.basename($_SERVER["REQUEST_URI"], "?".$_SERVER["QUERY_STRING"]).\'?q'.$tbl.'=\'.($q'.$tbl.'_str).\'\');
+
+}
+
+if(isset($_GET["q'.$tbl.'"])){
+
+
+$q'.$tbl.'=base64_decode($_GET["q'.$tbl.'"]);
+
+
+
+//===== limit record value
+
+$'.$tbl.'_sqlstring="SELECT COUNT(*) FROM `$'.$db.'`.`'.$tbl.'`'.$where_like_str.$additional_where_clause.'";
+
+//===== Pagination function
+
+$'.$tbl.'_pagination= list_record_per_page($mysqliconn, $'.$tbl.'_sqlstring, $datalimit);
+
+
+//===== get return values
+
+
+$'.$tbl.'_firstproduct=$'.$tbl.'_pagination["0"];
+
+$'.$tbl.'_pgcount=$'.$tbl.'_pagination["1"];';
+
+
+$gen_select_query.=PHP_EOL.PHP_EOL.'//=== start '.$tbl.' select  '.$comment.' list  '.PHP_EOL.PHP_EOL.'$'.$tbl.'_list_query=mysqli_query($mysqliconn, "SELECT * FROM `$'.$db.'`.`'.$tbl.'` '.$where_like_str.$additional_where_clause.' ORDER BY `'.$orderby_col.'` '.$ordertype.' LIMIT $'.$tbl.'_firstproduct, $datalimit" );
+
+'.PHP_EOL.PHP_EOL.'//=== End '.$tbl.' select  '.$comment.' list'.PHP_EOL.';
+
+}else{
+
+//===== limit record value
+
+$'.$tbl.'_sqlstring="SELECT COUNT(*) FROM `$'.$db.'`.`'.$tbl.'`'.$where_clause.'";
+
+//===== Pagination function
+
+$'.$tbl.'_pagination= list_record_per_page($mysqliconn, $'.$tbl.'_sqlstring, $datalimit);
+
+
+//===== get return values
+
+
+$'.$tbl.'_firstproduct=$'.$tbl.'_pagination["0"];
+
+$'.$tbl.'_pgcount=$'.$tbl.'_pagination["1"];';
+
+
+$gen_select_query.=PHP_EOL.PHP_EOL.'//=== start '.$tbl.' select  '.$comment.' list  '.PHP_EOL.PHP_EOL.'$'.$tbl.'_list_query=mysqli_query($mysqliconn, "SELECT * FROM `$'.$db.'`.`'.$tbl.'` '.$where_clause.' ORDER BY `'.$orderby_col.'` '.$ordertype.' LIMIT $'.$tbl.'_firstproduct, $datalimit" );
+
+//$'.$tbl.'_list_res=mysqli_fetch_array($'.$tbl.'_list_query);'.PHP_EOL.PHP_EOL.'//=== End '.$tbl.' select  '.$comment.' list'.PHP_EOL.'
+}
+
+//--<{ncgh}/>';
+
+
 
 	if($file_path!='')
 	{
@@ -425,7 +544,7 @@ function ajax_post_str($post_url, $json_post_params, $file_path, $create_new_fil
 
 
 
-function create_del_str($file_path, $comment, $dbname, $tbl, $where_str, $create_new_file)
+function create_del_str($file_path, $comment, $dbname, $tbl, $where_str, $primkey, $create_new_file)
 {
 
 
@@ -433,9 +552,8 @@ if($where_str!='')
 {
 $where_clause=' WHERE '.$where_str;
 }else{
-$where_clause='';
+$where_clause='WHERE `'.$primkey.'`=\'$'.$tbl.'_uptoken\'';
 }
-
 
 
 
@@ -698,6 +816,21 @@ if($file_path!='')
 //------------------------- End count select query--------//
 
 
+
+function create_cruds($file_path, $param_fields, $dbname, $tbl, $primkey)
+{
+
+insert_update_str($file_path, $param_fields, 'Create Update record from '.$tbl, $dbname, $tbl, $primkey, 'yes');
+
+bend_row_select_str($dbname, $tbl, '', $file_path, 'no', $primkey, 'DESC', 'Find '.$tbl.' Records Profile');
+
+full_bend_select_str($dbname, $tbl, '', $param_fields, $file_path, 'no', $primkey, 'DESC', 'Like Query String '.$tbl);
+
+create_del_str($file_path, ' **** Delete '.$tbl.' Records ', $dbname, $tbl, '', $primkey, 'no');
+
+
+}
+
 function bend_help()
 {
 	$help_functions='
@@ -752,6 +885,10 @@ function bend_help()
 
 	bend_sql_count($dbname, $file_path, $tbl, $count_col, $where, $comment, $create_new_file);
 
+
+	///============ Create select update insert and delete functions
+
+	create_cruds($file_path, $param_fields, $dbname, $tbl, $primkey);
 
 
 	//create AJAX query str
