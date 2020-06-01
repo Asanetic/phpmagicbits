@@ -68,7 +68,7 @@ function ui_write_to_file($file_path, $new_content_to_write)
 
 	$final_file_content=file_get_contents($file_path);
 
-	echo "<h2><u>File Succesfully created on ".$file_path."</u></h2>";
+	echo '<h2><u>File Succesfully created on <a href="'.$file_path.'" target="_blank">'.$file_path.'</a></u></h2>';
   }else{
   	echo "<h2>Sorry, File Overwrite is not allowed, a similar file '".$file_path."'  already exists. Delete this file before creating a new one. </h2> ";
   }
@@ -268,10 +268,15 @@ if ($i%$rows_per_grid ==1){
 			<?php if(isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button("'.$tbl.'_update_btn","Save Changes","");?>
 		</div>'.PHP_EOL;
 
-	$edit_butons='       
-    <?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
+	$edit_butons='  
+	<div class="col-md-12 mb-md-3" style="text-align: center;">
+     
+    	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'Back to list\', "");?>
 
-	<?php if(isset($_GET[\'editoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.($_GET["'.$tbl.'_uptoken"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');?>'.PHP_EOL;
+    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'Add new\', "");?> 
+
+		<?php if(isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.($_GET["'.$tbl.'_uptoken"]).\'&delete'.$tbl.'\',\'Delete\', \'style="background-color:red;"\');?>
+	</div>'.PHP_EOL;
 
 	}else{
 	
@@ -337,10 +342,14 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 
 	}
 
-
 	$return_table_ui_str='
-    <div align="left">
-    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
+    <div align="left" class="col-md-6">
+    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'Add new\', \'style="display:inline-block;"\');?> 
+    	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'Refresh\', \'style="display:inline-block;"\');?> 
+
+		<hr><input type="text" placeholder="Search '.str_replace("_", ' ', $tbl).'" name="txt_'.$tbl.'" class=" form-control col-md-9" style="display:inline-block; background-color:transparent; border-bottom:1px solid gray; "/>
+    	<?php echo magic_button(\'q'.$tbl.'_btn\', \'Search\', \'style="display:inline-block;"\');?> 
+
 	</div>
 	<div class="table-responsive data-tables" style="background-color: #FFF; margin-top: 20px; padding-bottom: 150px;">
 	<table class="table table-hover text-left" id="'.$tbl.'_data_table">
@@ -357,9 +366,9 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 		while($list'.$tbl.'_result=mysqli_fetch_array($'.$tbl.'_list_query)){
 	        $i++;
 
-	        $edit_drop_link=magic_link(\'./edit'.$tbl.'.php?editoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'\',\'<i class="fa fa-edit"></i> Edit\', \'\');
+	        $edit_drop_link=magic_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'\',\'<i class="fa fa-edit"></i> Edit\', \'\');
 
-	        $delete_drop_link=magic_link(\'./edit'.$tbl.'.php?editoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');
+	        $delete_drop_link=magic_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');
 
 	        $dropdown_items =$edit_drop_link.$delete_drop_link;
         ?>
@@ -416,7 +425,7 @@ function fend_help()
 
 	//====create bootstrap table 
 
- 	create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file);
+ 	create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file,  $edit_key);
 
  	//clone any file or write a file
 
