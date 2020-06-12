@@ -648,7 +648,7 @@ global $recordperpage_data;
 
 
 $requested_page = isset($_GET["rectkn"]) ? intval(base64_decode($_GET["rectkn"])) : 1;
-$firstrecords_query=mysqli_query($conn, "".$sqlstring."");
+$firstrecords_query=mysqli_query($mysqliconn, "".$sqlstring."");
 $firstrecords_res = mysqli_fetch_row($firstrecords_query);
 
 $product_count = $firstrecords_res[0];
