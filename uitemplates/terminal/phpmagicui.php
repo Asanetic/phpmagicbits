@@ -439,6 +439,5 @@ function fend_help()
 
 
 	return nl2br($help_functions);
-
 }
 ?>
