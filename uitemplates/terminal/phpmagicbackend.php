@@ -47,7 +47,6 @@ function bend_replace_file_section($file_path, $item_to_be_replaced, $item_to_re
 	$final_file_content=$new_file_content;
 
 	return $final_file_content;
-
 }
 //------------------------- end replace file contents --------//
 
