@@ -1,18 +1,21 @@
 <?php
 ob_start();
-
-session_start();
+include("../data_control/conn.php");
 
 //=========
-$col_script_sample="
+$col_script="
 `primkey` int(255) PRIMARY KEY AUTO_INCREMENT,
-`msgid` varchar(500) NOT NULL,
-`client_name` varchar(500) NOT NULL,
-`client_mobile` varchar(500) NOT NULL,
-`client_email` varchar(500) NOT NULL,
-`message_date` varchar(500) NOT NULL,
-`client_note` TEXT NOT NULL";
+`entry_id` varchar(500) NOT NULL,
+`user_id` varchar(500) NOT NULL,
+`login_time` varchar(500) NOT NULL,
+`logout_time` varchar(500) NOT NULL,
+`session_status` varchar(500) NOT NULL";
 
+$navbar_path="./includes/navbar.php";
+$footer_path="./includes/footer.php";
+$header_css_scripts="./includes/header_css_scripts.php";
+$background_image_path="";
+$template_path="";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,8 +61,11 @@ a{
         <h4 class="col-md-12" style="text-align: center;">Terminal X<br><br></h2>
         <?php if(isset($_POST['btn_exec_command'])){?>
             
-             <a href="./terminal.php" type="submit" style="position: fixed; right: 20px; color: #FFF;">Refresh</a>
-    <?php }?>
+             <a href="./terminal.php" style="position: fixed; right: 20px; color: #FFF;">Refresh</a>
+    <?php }?>             
+
+    <a href="./terminal.php" target="_blank" style="position: fixed; right: 20px; top:100px; color: #FFF;">New Instance</a>
+
           <!-- <{ncgh}/> - new code will replace this tag. Pleace it where you want the terminal to write new code-->
           <div align="center" style="width: 100%">
           <div style="text-align: left; padding-top:130px; width: 70%;">
@@ -90,7 +96,7 @@ a{
           }
 
           //set error handler
-          set_error_handler("customError");
+          //set_error_handler("customError");
 
 
           if(isset($_POST['btn_exec_command']))

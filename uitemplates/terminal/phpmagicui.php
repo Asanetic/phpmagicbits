@@ -266,6 +266,7 @@ if ($i%$rows_per_grid ==1){
 		<div align="center" style="width: 98%">
 			<?php if(!isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button("'.$tbl.'_insert_btn","Proceed","");?>
 			<?php if(isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button("'.$tbl.'_update_btn","Save Changes","");?>
+		</div>
 		</div>'.PHP_EOL;
 
 	$edit_butons='  
@@ -276,7 +277,9 @@ if ($i%$rows_per_grid ==1){
     	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'Add new\', "");?> 
 
 		<?php if(isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.($_GET["'.$tbl.'_uptoken"]).\'&delete'.$tbl.'\',\'Delete\', \'style="background-color:red;"\');?>
-	</div>'.PHP_EOL;
+	</div>     
+	<div class="row p-md-3 justify-content-center bg-white col-md-11">
+	'.PHP_EOL;
 
 	}else{
 	

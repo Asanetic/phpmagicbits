@@ -375,7 +375,7 @@ header(\'location:./\'.basename($_SERVER["REQUEST_URI"], "?".$_SERVER["QUERY_STR
 if(isset($_GET["q'.$tbl.'"])){
 
 
-$q'.$tbl.'=base64_decode($_GET["q'.$tbl.'"]);
+$q'.$tbl.'=mysqli_real_escape_string($mysqliconn, base64_decode($_GET["q'.$tbl.'"]));
 
 
 
@@ -649,7 +649,7 @@ global $recordperpage_data;
 
 
 $requested_page = isset($_GET["rectkn"]) ? intval(base64_decode($_GET["rectkn"])) : 1;
-$firstrecords_query=mysqli_query($mysqliconn, "".$sqlstring."");
+$firstrecords_query=mysqli_query($conn, "".$sqlstring."");
 $firstrecords_res = mysqli_fetch_row($firstrecords_query);
 
 $product_count = $firstrecords_res[0];
