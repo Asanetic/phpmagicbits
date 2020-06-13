@@ -15,7 +15,7 @@ ob_start();
 {header_css_scripts}
 </head>
 
-<body style="background-image: url('{background_image}');">
+<body>
     <form method="post" enctype="multipart/form-data">
 {navbar_path}
     <main role="main" class="container-fluid skin_plasma padding_row">
