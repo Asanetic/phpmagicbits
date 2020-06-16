@@ -23,12 +23,22 @@ margin-top: 70px!important;
 {
 margin-top: 100px!important;
 }
-
+.padding_row
+{
+margin-top: 65px!important;
+}
+.navbar-brand{
+    font-size:27px;
+}
 @media screen and (max-width: 700px)
 {
 .padding_row
 {
-margin-top: 80px!important;
+margin-top: 65px!important;
+}
+    
+.navbar-brand{
+    font-size:1.25rem;
 }
 
 .padding_row_gen
