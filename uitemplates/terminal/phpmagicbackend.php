@@ -47,6 +47,7 @@ function bend_replace_file_section($file_path, $item_to_be_replaced, $item_to_re
 	$final_file_content=$new_file_content;
 
 	return $final_file_content;
+
 }
 //------------------------- end replace file contents --------//
 
@@ -648,7 +649,7 @@ global $recordperpage_data;
 
 
 $requested_page = isset($_GET["rectkn"]) ? intval(base64_decode($_GET["rectkn"])) : 1;
-$firstrecords_query=mysqli_query($mysqliconn, "".$sqlstring."");
+$firstrecords_query=mysqli_query($conn, "".$sqlstring."");
 $firstrecords_res = mysqli_fetch_row($firstrecords_query);
 
 $product_count = $firstrecords_res[0];
