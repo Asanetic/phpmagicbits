@@ -47,7 +47,6 @@ function bend_replace_file_section($file_path, $item_to_be_replaced, $item_to_re
 	$final_file_content=$new_file_content;
 
 	return $final_file_content;
-
 }
 //------------------------- end replace file contents --------//
 
@@ -327,6 +326,161 @@ $'.$tbl.'_node=mysqli_fetch_array($'.$params_name."_".$tbl.'_query);'.PHP_EOL.PH
 	}
 }
 
+
+function create_login($dbname, $tbl, $primkey, $user_email, $username, $password, $comment, $gotourl, $session_name, $create_new_file, $file_path)
+{
+
+$clean_comment=str_replace(" ", "_", $comment);
+
+$var_login_str ='
+
+//=== start '.$comment.' Login Script query 
+
+if(isset($_POST["btn_login"]))
+{
+$password=mysqli_real_escape_string($mysqliconn, $_POST["txt_password"]);
+$user_email=mysqli_real_escape_string($mysqliconn, $_POST["txt_username"]);
+
+$'.$clean_comment.'_query=mysqli_query($mysqliconn, "SELECT * FROM `$'.$dbname.'`.`'.$tbl.'`  WHERE `'.$user_email.'`=\'$user_email\' AND `'.$password.'`=\'$password\'");
+
+$'.$clean_comment.'_r=mysqli_fetch_array($'.$clean_comment.'_query);
+
+if(!empty($'.$clean_comment.'_r[\''.$user_email.'\']) && !empty($'.$clean_comment.'_r[\''.$password.'\']))
+{
+
+$_SESSION[\''.$session_name.'\']=TRUE;
+$_SESSION[\''.$session_name.'_'.$user_email.'\']=$'.$clean_comment.'_r[\''.$user_email.'\'];
+$_SESSION[\''.$session_name.'_'.$username.'\']=$'.$clean_comment.'_r[\''.$username.'\'];
+
+	header("location:'.$gotourl.'");
+
+}else{
+
+	echo magic_message("Wrong password or user name please try again");
+}
+
+}
+//=== End '.$comment.' Login Script query
+
+//=========request password
+if(isset($_POST[\'requestnewpass_btn\'])){
+
+$membusername=$_POST[\'email_user\'];
+
+$cpsreset_query1=mysqli_query($mysqliconn,"SELECT * FROM `$'.$dbname.'`.`'.$tbl.'`  WHERE '.$user_email.'=\'$membusername\'");
+
+$cpsreset_res1=mysqli_fetch_array($cpsreset_query1);
+
+$cpsreset_query=mysqli_query($mysqliconn,"SELECT * FROM `$'.$dbname.'`.`'.$tbl.'`   WHERE '.$user_email.'=\'$membusername\'");
+
+$cpsreset_res=mysqli_num_rows($cpsreset_query);
+if($cpsreset_res==1){
+
+$showname="ClearPhrases Reset Pssword"; 
+$tel="0710766390"; 
+
+$from_email="clearphrases@gmail.com";
+
+$to_email=$_POST[\'email_user\'];
+$client_names=$cpsreset_res1[\''.$username.'\'];
+
+
+$path1="http://".$_SERVER[\'HTTP_HOST\'].$_SERVER[\'PHP_SELF\'];
+//echo $path1;
+
+$msgtosend=\'Hello You requested a password request. Follow this link to create a new password.<br /><br />
+<a href="\'.$path1.\'?reset_token=\'.base64_encode($cpsreset_res1[\''.$primkey.'\']).\'">Reset Password</a><br /><br />\';
+
+$message=$msgtosend;
+$subject="Password reset Request";
+$actlink="http://www.clearphrases.com";
+
+
+$replypath="http://www.clearphrases.com";
+
+
+$messvars = "sendemailapi=send&mailsubj=".$subject."&showname=".$showname."&namesarray=".$client_names."&mailmessage=".$message."&sendto=".$to_email."&repmail=".$from_email."&actlink=".$actlink."&replypath=".$replypath."&imgreq=";
+
+//echo $msgtosend;
+$agent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)";
+$ch = curl_init( "http://clearphrases.com/clearphrases_apis/comms/emailsender.php");
+curl_setopt( $ch, CURLOPT_POST, 1);
+
+curl_setopt( $ch, CURLOPT_POSTFIELDS, $messvars);
+curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_VERBOSE, 1);
+curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+$sendsmsres = curl_exec( $ch );
+
+echo magic_message("We have sent you a reset password email. Follow that link to reset your password");
+
+
+
+
+}else{
+echo magic_message("Sorry that email does not exist. Please Try Again");
+}
+}
+//===================reset password request
+
+////===========reset pass=============
+if(isset($_GET[\'reset_token\'])){
+
+$memberkey=base64_decode($_GET[\'reset_token\']);
+
+
+$cpsresetoken_query=mysqli_query($mysqliconn,"SELECT * FROM `$'.$dbname.'`.`'.$tbl.'`  WHERE '.$primkey.'=\'$memberkey\'");
+
+$cpsresetoken_res=mysqli_num_rows($cpsresetoken_query);
+
+
+}
+if(isset($_POST[\'changepass_btn\'])){
+$memberkey=base64_decode($_GET[\'reset_token\']);
+
+$cpsresetoken_query1=mysqli_query($mysqliconn,"SELECT * FROM `$'.$dbname.'`.`'.$tbl.'`  WHERE '.$primkey.'=\'$memberkey\'");
+
+$cpsresetoken_res1=mysqli_fetch_array($cpsresetoken_query1);
+
+$foundresetmail=$cpsresetoken_res1[\''.$user_email.'\'];
+$resetpass1=mysqli_real_escape_string($mysqliconn,$_POST[\'newpass_user\']);
+$resetpass2=mysqli_real_escape_string($mysqliconn,$_POST[\'confirmnewpass_user\']);
+if($resetpass1!=$resetpass2){
+
+echo magic_message("Password Do Not match!!");
+}else{
+
+mysqli_query($mysqliconn,"UPDATE `$'.$dbname.'`.`'.$tbl.'` SET '.$password.'=\'$resetpass1\' WHERE '.$user_email.'=\'$foundresetmail\' AND '.$primkey.'=\'$memberkey\'");
+
+echo magic_message("Password reset succesfully. Login afresh to continue.");
+}
+}
+//===========reset pass============= 
+//--<{ncgh}/>';
+
+
+	if($file_path!='')
+	{
+		if($create_new_file=='yes'){
+
+
+			bend_write_to_file($file_path, $var_login_str);
+		
+		}else{
+
+			bend_replace_file_section($file_path, '//--<{ncgh}/>', $var_login_str);
+
+
+		}
+
+
+	}
+
+return $var_login_str;
+
+
+}
 
 function full_bend_select_str($db, $tbl, $where_str, $param_fields, $file_path, $create_new_file, $orderby_col, $ordertype, $comment)
 {
@@ -649,7 +803,7 @@ global $recordperpage_data;
 
 
 $requested_page = isset($_GET["rectkn"]) ? intval(base64_decode($_GET["rectkn"])) : 1;
-$firstrecords_query=mysqli_query($conn, "".$sqlstring."");
+$firstrecords_query=mysqli_query($mysqliconn, "".$sqlstring."");
 $firstrecords_res = mysqli_fetch_row($firstrecords_query);
 
 $product_count = $firstrecords_res[0];
@@ -912,7 +1066,9 @@ function bend_help()
 
  	bend_replace_file_section($file_path, $item_to_be_replaced, $item_to_replace_with)
 
+ 	//create login str
 
+	 create_login($dbname, $tbl, $primkey, $user_email, $username, $password, $comment, $gotourl, $session_name, $create_new_file, $file_path)
 
 	';
 

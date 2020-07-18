@@ -1,14 +1,17 @@
 <?php
 ob_start();
+include("../data_control/conn.php");
 
 //=========
 $col_script="
 `primkey` int(255) PRIMARY KEY AUTO_INCREMENT,
-`entry_id` varchar(500) NOT NULL,
-`user_id` varchar(500) NOT NULL,
-`login_time` varchar(500) NOT NULL,
-`logout_time` varchar(500) NOT NULL,
-`session_status` varchar(500) NOT NULL";
+`tenant_id` varchar(500) NOT NULL,
+`room_id` varchar(500) NOT NULL,
+`property_id` varchar(500) NOT NULL,
+`transaction_ref` varchar(500) NOT NULL,
+`amount` int(200) NOT NULL,
+`current_month` varchar(500) NOT NULL,
+`site_id` varchar(500) NOT NULL";
 
 $navbar_path="./includes/navbar.php";
 $footer_path="./includes/footer.php";

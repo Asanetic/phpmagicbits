@@ -306,7 +306,7 @@ if ($i%$rows_per_grid ==1){
 }
 
 
-function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file, $edit_key)
+function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file, $edit_key, $plain_link, $linkcol)
 {
 
 	global $return_table_ui_str;
@@ -336,14 +336,37 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 			$label_node=$json_inputs_array[$key];
 		}
 			$template_head_str.=
-			' <th scope="col">'.$label_node.'</td>'.PHP_EOL;
+			' <th scope="col">'.$label_node.'</th>'.PHP_EOL;
+
+		if($plain_link=='yes'){
+			if($key==$linkcol){
+				$template_cell_str.=
+				' <td scope="col">
+				<a href="<?php echo (\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]));?>">
+					<?php echo $list'.$tbl.'_result["'.$key.'"];?>
+				</a>
+				</td>'.PHP_EOL;
+			}else{
+				$template_cell_str.=
+				' <td scope="col"><?php echo $list'.$tbl.'_result["'.$key.'"];?></td>'.PHP_EOL;
+
+			}
+		}else{
 			$template_cell_str.=
-			' <td scope="col"><?php echo $list'.$tbl.'_result["'.$key.'"];?></td>'.PHP_EOL;
+				' <td scope="col"><?php echo $list'.$tbl.'_result["'.$key.'"];?></td>'.PHP_EOL;
+
+		}
 
 		}
 
 
 	}
+		if($plain_link=='yes'){
+	     $drop_col_card='<td scope="col"><?php echo $i;?></td>';
+	 	}else{
+	     $drop_col_card='<td scope="col"><?php echo magic_dropdown($i, $dropdown_items, \'no\')?></td>';
+	 	}
+
 
 	$return_table_ui_str='
     <div align="left" class="col-md-6">
@@ -376,7 +399,7 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 	        $dropdown_items =$edit_drop_link.$delete_drop_link;
         ?>
 	    <tr>
-	    <td scope="col"><?php echo magic_dropdown($i, $dropdown_items, \'no\')?></td>
+	    	'.$drop_col_card.'
 			'.$template_cell_str.'
 	    </tr>
 	    <?php }?>
@@ -406,7 +429,33 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 	return $return_table_ui_str;
 }
 
+function editor_script()
 
+{
+
+	global $editor_script;
+
+	$editor_script= '    
+	<script src="./editor/ckeditor.js"></script>
+    <script src="./editor/adapters/jquery.js"></script>
+
+    <script type="text/javascript">
+            CKEDITOR.disableAutoInline = true;
+
+            $( document ).ready( function() {
+                $( \'#editable_div_id\' ).ckeditor(); // Use CKEDITOR.inline().
+            } );
+
+
+    function flip_editable_div(){
+
+        document.getElementById("editable_div_id_textbox").value=document.getElementById("editable_div_id").innerHTML;
+    
+    }
+    </script>';
+
+	return nl2br(htmlspecialchars($editor_script));
+}
 
 
 function fend_help()
@@ -428,17 +477,23 @@ function fend_help()
 
 	//====create bootstrap table 
 
- 	create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file,  $edit_key);
+	create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_file, $edit_key, $plain_link, $linkcol);
 
  	//clone any file or write a file
 
  	ui_write_to_file($file_path, $new_content_to_write);
+
+ 	//ck editor script library
+
+ 	echo editor_script();
 
  	';
 
 
 
 	return nl2br($help_functions);
-
 }
+
+
+
 ?>

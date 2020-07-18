@@ -1,1 +1,1 @@
-<?php ajax_post_str('../data_control/loginajax.php', magic_sql_json_cols('county_members'), '../data_control/userlgn.php', 'yes');?>
+<?php create_magic_form('../myaccount.php', magic_sql_json_cols('digi_admin'), 'digi_admin', '5', 'col-md-4', '', 'digi_admin Inputs');?>
