@@ -1,6 +1,5 @@
 <?php
 ob_start();
-include("../data_control/conn.php");
 
 //=========
 $col_script="
