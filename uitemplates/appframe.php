@@ -18,7 +18,7 @@ ob_start();
 <body>
     <form method="post" enctype="multipart/form-data">
 {navbar_path}
-    <main role="main" class="container-fluid skin_plasma padding_row">
+    <main role="main" class="container-fluid skin_plasma padding_row" style="min-height:100vh;">
 
       <div class="row mt-5 pt-5 justify-content-center">
         <h4 class="col-md-12" style="text-align: center;">{page_title}<br><br></h4>
