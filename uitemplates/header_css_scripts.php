@@ -7,7 +7,6 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    background-image: url('./img/bg.jpg');
 }
 
 .skin_plasma
