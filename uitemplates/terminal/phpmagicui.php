@@ -272,11 +272,11 @@ if ($i%$rows_per_grid ==1){
 	$edit_butons='  
 	<div class="col-md-12 mb-md-3" style="text-align: center;">
      
-    	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'Back to list\', "");?>
+    	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'<i class="fa fa-arrow-left"></i> Back to list\', "");?>
 
-    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'Add new\', "");?> 
+    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
 
-		<?php if(isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.($_GET["'.$tbl.'_uptoken"]).\'&delete'.$tbl.'\',\'Delete\', \'style="background-color:red;"\');?>
+		<?php if(isset($_GET[\''.$tbl.'_uptoken\'])) echo magic_button_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.($_GET["'.$tbl.'_uptoken"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'style="background-color:red;"\');?>
 	</div>     
 	<div class="row p-md-3 justify-content-center bg-white col-md-11">
 	'.PHP_EOL;
@@ -411,15 +411,23 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 	}
 		if($plain_link=='yes'){
 	     $drop_col_card='<td scope="col"><?php echo $i;?></td>';
+	     $edit_del_drop_ui='';
 	 	}else{
 	     $drop_col_card='<td scope="col"><?php echo magic_dropdown($i, $dropdown_items, \'no\')?></td>';
+
+	        $edit_del_drop_ui='$edit_drop_link=magic_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'\',\'<i class="fa fa-edit"></i> Edit\', \'\');
+
+	        $delete_drop_link=magic_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');
+
+	        $dropdown_items =$edit_drop_link.$delete_drop_link;';
+
 	 	}
 
 
 	$return_table_ui_str='
     <div align="left" class="col-md-6">
-    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'Add new\', \'style="display:inline-block;"\');?> 
-    	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'Refresh\', \'style="display:inline-block;"\');?> 
+    	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', \'style="display:inline-block;"\');?> 
+    	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'<i class="fa fa-refresh"></i> Refresh\', \'style="display:inline-block;"\');?> 
 
 		<hr><input type="text" placeholder="Search '.str_replace("_", ' ', $tbl).'" name="txt_'.$tbl.'" class=" form-control col-md-9" style="display:inline-block; background-color:transparent; border-bottom:1px solid gray; "/>
     	<?php echo magic_button(\'q'.$tbl.'_btn\', \'Search\', \'style="display:inline-block;"\');?> 
@@ -440,11 +448,7 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 		while($list'.$tbl.'_result=mysqli_fetch_array($'.$tbl.'_list_query)){
 	        $i++;
 
-	        $edit_drop_link=magic_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'\',\'<i class="fa fa-edit"></i> Edit\', \'\');
-
-	        $delete_drop_link=magic_link(\'./edit'.$tbl.'.php?'.$tbl.'_uptoken=\'.base64_encode($list'.$tbl.'_result["'.$tbl_primkey.'"]).\'&delete'.$tbl.'\',\'<i class="fa fa-trash"></i> Delete\', \'\');
-
-	        $dropdown_items =$edit_drop_link.$delete_drop_link;
+	        '.$edit_del_drop_ui.'
         ?>
 	    <tr>
 	    	'.$drop_col_card.'
@@ -544,8 +548,8 @@ function create_side_bar($file_path, $hidden, $parent_id)
 			<div style="font-weight: bold; font-size: 15px; text-align: left;" class="p-2 desk_filter">Quick Menu<hr style="margin-bottom: 0px;"></div>
 			<div  style="text-align: left;" class="mobi_cartegory" id="cart_tray">
 
-			<img src="./img/logo.png" style="max-height: 24px; width: 24px;"/>			
-			<a href="#">Go To</a>
+			<i class="fa fa-home"></i>			
+			<a href="#">Home</a>
 			<hr class="mt-0">
 			</div>
 
@@ -566,8 +570,8 @@ function create_side_bar($file_path, $hidden, $parent_id)
 					<span class="badge badge-danger" style="float: right; cursor: pointer;" onclick="document.getElementById(\''.$parent_id.'\').style.display=\'none\';"> X</span>
 					    <div class="side_nav_inner">
 					   		<hr>
-						    <img src="./img/logo.png" style="max-height: 24px; width: 24px;"/>			
-							<a href="#">Go To</a>
+						    <i class="fa fa-home"></i>			
+							<a href="#">Home</a>
 					    </div>
 				    </div>';
 			}
@@ -629,11 +633,11 @@ if($login_resetrequest_updatepass_newacc=='newacc'){
 <div class="col-md-4 p-4 mt-md-5 rounded-lg shadow-sm" style="background-color: rgba(255,255,255, 0.5);  border-top: 2px solid orange;">
   <h6>Create Account</h6>
 	<div class="form-group mt-3">
-		<label >Username</label>
+		<label ><i class="fa fa-user"></i> Username</label>
 		<input class="form-control" id="txt_username" name="txt_username" placeholder="Username" type="text" required="">
 	</div>
 	<div class="form-group">
-		<label >Password </label>
+		<label ><i class="fa fa-lock"></i> Password </label>
 		<input class="form-control" id="txt_password" name="txt_password" placeholder="Password" type="password" required="">
 	</div>
 	<div align="center" style="width: 98%">
@@ -657,11 +661,11 @@ if($login_resetrequest_updatepass_newacc=='login'){
 <div class="col-md-4 p-4 mt-md-5 rounded-lg  shadow-sm" style="background-color: rgba(255,255,255, 0.5);  border-top: 2px solid orange;">
   <h6>Login to proceed</h6>
 	<div class="form-group mt-3">
-		<label >Username</label>
+		<label ><i class="fa fa-user"></i> Username</label>
 		<input class="form-control" id="txt_username" name="txt_username" placeholder="Username" type="text" required="">
 	</div>
 	<div class="form-group">
-		<label >Password </label>
+		<label ><i class="fa fa-lock"></i> Password </label>
 		<input class="form-control" id="txt_password" name="txt_password" placeholder="Password" type="password" required="">
 	</div>
 	<div align="center" style="width: 98%">
@@ -683,8 +687,8 @@ if($login_resetrequest_updatepass_newacc=='resetrequest'){
 <div class="col-md-4 p-4 mt-md-5 rounded-lg  shadow-sm" style="background-color: rgba(255,255,255, 0.5);  border-top: 2px solid orange;">
   <h6>Reset Password</h6>
 	<div class="form-group mt-3">
-		<label >Enter your Email</label>
-		<input class="form-control" id="email_user" name="email_user" placeholder="Email" type="text" required="">
+		<label ><i class="fa fa-at"></i> Enter your Email</label>
+		<input class="form-control" id="email_user" name="email_user" placeholder="Email" type="email" required="">
 	</div>
 	<div align="center" style="width: 98%">
 		<?php   echo magic_button("requestnewpass_btn","Proceed","");?>
@@ -705,11 +709,11 @@ if($login_resetrequest_updatepass_newacc=='updatepass'){
 <div class="col-md-4 p-4 mt-md-5 rounded-lg  shadow-sm" style="background-color: rgba(255,255,255, 0.5);  border-top: 2px solid orange;">
   <h6>Change Password</h6>
 	<div class="form-group mt-3">
-		<label >New Password</label>
+		<label ><i class="fa fa-lock"></i> New Password</label>
 		<input class="form-control" id="email_user" name="email_user" placeholder="Enter New Password<" type="text" required="">
 	</div>
 	<div class="form-group mt-3">
-		<label >Confirm New Password</label>
+		<label ><i class="fa fa-lock"></i> Confirm New Password</label>
 		<input class="form-control" id="email_user" name="email_user" placeholder="Confirm New Password" type="text" required="">
 	</div>
 	<div align="center" style="width: 98%">
