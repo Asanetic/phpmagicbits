@@ -26,7 +26,30 @@
  * @link       https://github.com/Asanetic/phpmagicbits
  * @DOCUMENTATION : https://github.com/Asanetic/phpmagicbits/blob/master/README.md
 */
+function magic_toast($title, $message)
+{
+global $toast_str;
 
+$toast_str='
+<div aria-live="polite" aria-atomic="true" style="position: fixed; min-height: 200px;" class="col-md-3">
+  <div class="toast" data-delay="10000">
+    <div class="toast-header">
+      <strong class="mr-auto"> '.$title.'</strong>
+      <small>@ '.date('h:i:s A').'</small>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      '.$message.'
+    </div>
+  </div>
+</div>
+';
+
+return $toast_str;
+
+}
 function magic_str_to_url($string, $title, $additional_attr) 
 {
   return preg_replace(
