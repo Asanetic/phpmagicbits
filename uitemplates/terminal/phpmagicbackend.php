@@ -122,10 +122,10 @@ function insert_update_str($file_path, $param_fields, $comment, $dbname, $tbl, $
 		$update_set_str=implode(',', $update_vars);
 
 		$insert_query_str=
-		 '$'.$tbl.'_insert_query = mysqli_query($mysqliconn, "INSERT INTO `$'.$dbname.'`.`'.$tbl.'` ('.$prepared_cols.') VALUES ('.$insert_post_vars.')");'.PHP_EOL.PHP_EOL.' //--- get primary key id'.PHP_EOL.'$'.$tbl.'_return_key=mysqli_insert_id($mysqliconn);'.PHP_EOL.PHP_EOL.' //--- Redirect to current location with primary key'.PHP_EOL.'header(\'location:./\'.basename($_SERVER["REQUEST_URI"], "?".$_SERVER["QUERY_STRING"]).\'?'.$tbl.'_uptoken=\'.base64_encode($'.$tbl.'_return_key).\'\');';
+		 '$'.$tbl.'_insert_query = mysqli_query($mysqliconn, "INSERT INTO `$'.$dbname.'`.`'.$tbl.'` ('.$prepared_cols.') VALUES ('.$insert_post_vars.')");'.PHP_EOL.PHP_EOL.' //--- get primary key id'.PHP_EOL.'$'.$tbl.'_return_key=mysqli_insert_id($mysqliconn);'.PHP_EOL.PHP_EOL.' //--- Redirect to current location with primary key'.PHP_EOL.'header(\'location:./\'.basename($_SERVER["REQUEST_URI"], "?".$_SERVER["QUERY_STRING"]).\'?'.$tbl.'_uptoken=\'.base64_encode($'.$tbl.'_return_key).\'&table_alert=Record added Succesfully\');';
 
 		$update_query_str=
-		'$'.$tbl.'_update_query = mysqli_query($mysqliconn, "UPDATE  `$'.$dbname.'`.`'.$tbl.'` SET '.$update_set_str.' WHERE '.$editkey.'=\'$'.$tbl.'_uptoken\'");'.PHP_EOL.PHP_EOL.'//--- Redirect to current location with primary key'.PHP_EOL.'header(\'location:./\'.basename($_SERVER["REQUEST_URI"], "?".$_SERVER["QUERY_STRING"]).\'?'.$tbl.'_uptoken=\'.base64_encode($'.$tbl.'_uptoken).\'\');'.PHP_EOL;
+		'$'.$tbl.'_update_query = mysqli_query($mysqliconn, "UPDATE  `$'.$dbname.'`.`'.$tbl.'` SET '.$update_set_str.' WHERE '.$editkey.'=\'$'.$tbl.'_uptoken\'");'.PHP_EOL.PHP_EOL.'//--- Redirect to current location with primary key'.PHP_EOL.'header(\'location:./\'.basename($_SERVER["REQUEST_URI"], "?".$_SERVER["QUERY_STRING"]).\'?'.$tbl.'_uptoken=\'.base64_encode($'.$tbl.'_uptoken).\'&table_alert=Record Updated Succesfully\');'.PHP_EOL;
 	
 
 	if($create_new_file=='yes'){
@@ -738,7 +738,7 @@ mysqli_query($mysqliconn, "DELETE FROM `$'.$dbname.'`.`'.$tbl.'` '.$where_clause
 
 //==add your redirect here 
 
-header("location:./'.$tbl.'.php");
+header("location:./'.$tbl.'.php?table_alert=Record Deleted Succesfully");
 }
 
 //== End '.$comment.'
