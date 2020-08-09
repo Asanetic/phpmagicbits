@@ -32,8 +32,7 @@ function magic_toast($title, $message, $bgcolor, $color)
 global $toast_str;
 
 $toast_str='
-<div aria-live="polite" aria-atomic="true" style="position: fixed; min-height: 200px; left:30%;" class="col-md-3">
-  <div class="toast" data-delay="10000" style="background-color:'.$bgcolor.';color:'.$color.'">
+  <div class="toast ml-md-5 " data-delay="10000" style="background-color:'.$bgcolor.';color:'.$color.'">
     <div class="toast-header">
       <strong class="mr-auto"> '.$title.'</strong>
       <small>@ '.date('h:i:s A').'</small>
@@ -45,13 +44,11 @@ $toast_str='
       '.$message.'
     </div>
   </div>
-</div>
 ';
 
 return $toast_str;
 
 }
-
 	
 function magic_str_to_url($string, $title, $additional_attr) 
 {
