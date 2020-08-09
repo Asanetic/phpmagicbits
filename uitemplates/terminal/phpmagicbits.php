@@ -32,7 +32,7 @@ function magic_toast($title, $message, $bgcolor, $color)
 global $toast_str;
 
 $toast_str='
-  <div class="toast ml-md-5 " data-delay="10000" style="background-color:'.$bgcolor.';color:'.$color.'">
+  <div class="toast " data-delay="10000" style="background-color:'.$bgcolor.';color:'.$color.'">
     <div class="toast-header">
       <strong class="mr-auto"> '.$title.'</strong>
       <small>@ '.date('h:i:s A').'</small>
