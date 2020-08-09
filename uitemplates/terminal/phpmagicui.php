@@ -271,7 +271,9 @@ if ($i%$rows_per_grid ==1){
 
 	$edit_butons='  
 	<div class="col-md-12 mb-md-3" style="text-align: center;">
-     
+         <div style="text-align: center; ">
+    		<?php if(isset($_GET[\'table_alert\'])) echo magic_toast(\'Success\', $_GET[\'table_alert\'], \'darkgreen\', \'#FFF\'); ?>
+    	</div>
     	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'<i class="fa fa-arrow-left"></i> Back to list\', "");?>
 
     	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', "");?> 
@@ -426,6 +428,9 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
 
 	$return_table_ui_str='
     <div align="left" class="col-md-6">
+       <div style="text-align: center; ">
+    		<?php if(isset($_GET[\'table_alert\'])) echo magic_toast(\'Success\', $_GET[\'table_alert\'], \'darkgreen\', \'#FFF\'); ?>
+    	</div>
     	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', \'style="display:inline-block;"\');?> 
     	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'<i class="fa fa-refresh"></i> Refresh\', \'style="display:inline-block;"\');?> 
 
