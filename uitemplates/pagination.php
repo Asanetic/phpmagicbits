@@ -8,7 +8,7 @@ $_SESSION['filelim']="15";
 }
 
 
-$limit_per_page='Limit to '.$_SESSION['filelim'].' records per Page'; 
+$limit_per_page='Show '.$_SESSION['filelim'].' Rows per Page'; 
 
 if($_SESSION['filelim']=='100000000000000000'){
 $limit_per_page=" Showing All Records ";
@@ -29,12 +29,69 @@ border-bottom:1px solid gray;
 margin-bottom:1px;
 background-color:rgba(255,255,255,0.0);
 }
-
+.page-link{
+	margin-top: 10px;
+}
+@media screen and (max-width: 700px){
+.hide_mobi
+{
+display: none;
+}
+}
 </style>
-<div style="width: 100%; text-align: center;">
-<!--loop next pages -->
-<p  class="looppage_labelwidget" align="center">  <?php echo $limit_per_page;?> | Change  
-<select class="looppage_combowidget" onChange="changelim();" name="reclimcmb" id="reclimcmb">
+
+<div style="width: 100%; text-align: left!important; margin-top: 30px; " class="table-responsive">
+	<?php
+
+	$current_url_params="http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+	$clean_current_url=$current_url_params.'?rectkn=';
+
+
+	if (strpos($current_url_params, '?') !== false) {
+	    
+	    $clean_current_url=$current_url_params.'&rectkn=';
+
+	}
+	if (strpos($current_url_params, '?rectkn')) {
+
+		$remove_old_token = substr($current_url_params, 0, strpos($current_url_params, "?rectkn"));
+
+		$clean_current_url=$remove_old_token.'?rectkn=';
+
+	}
+	if(strpos($current_url_params, '&rectkn')) {
+
+		$remove_old_token = substr($current_url_params, 0, strpos($current_url_params, "&rectkn"));
+
+		$clean_current_url=$remove_old_token.'&rectkn=';
+
+	}
+
+
+	if (isset($_GET['rectkn']) && $_GET['rectkn']!="") {
+		$page_no = base64_decode($_GET['rectkn']);
+		} else {
+			$page_no = 1;
+	        }
+	 	$total_records_per_page = $datalimit;
+	    $offset = ($page_no-1) * $total_records_per_page;
+		$previous_page = $page_no - 1;
+		$next_page = $page_no + 1;
+		$adjacents = "2";
+		$mobi_adjacents = "0";
+
+		$total_no_of_pages=$pagination_record_count;
+
+
+		$second_last = $total_no_of_pages - 1; // total page minus 1
+	?>
+<div style='border-top: dotted 1px blue; padding-left: 20px;' class="d-none d-md-none d-sm-none d-lg-block">
+
+	<ul class="pagination  pagination-sm  justify-content-center">
+	<?php // if($page_no > 1){ echo "<li><a href='?rectkn=1'>First Page</a></li>"; } ?>
+<p  class="looppage_labelwidget" align="center"> <?php echo $limit_per_page;?> | Change  
+<select class="looppage_combowidget" onChange="changelim(this.value);" name="reclimcmb" id="reclimcmb">
 <option>1</option>
 <option>2</option>
 <option>5</option>
@@ -46,11 +103,163 @@ background-color:rgba(255,255,255,0.0);
 <option>1000</option>
 <option value="100000000000000000">All Records</option>
 </select>
-Go to Page
+</p>
+<div class="looppage_labelwidget text-primary hide_mobi"> Page <?php echo $page_no." of ".$total_no_of_pages; ?></div>		
+<li <?php if($page_no <= 1){ echo "class='page-item disabled'"; }else{ echo " class='page-item' ";}  ?>>
+		<a class='page-link' <?php if($page_no > 1){ echo "href='".$clean_current_url.base64_encode($previous_page)."'"; } ?>>Prev</a>
+		</li>
+	       
+	    <?php 
+		if ($total_no_of_pages <= 10){  	 
+			for ($counter = 1; $counter <= $total_no_of_pages; $counter++){
+				if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}
+	        }
+		}
+		elseif($total_no_of_pages > 10){
+			
+		if($page_no <= 4) {			
+		 for ($counter = 1; $counter < 8; $counter++){		 
+				if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a href='' class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}
+	        }
+			echo "<li class='page-item' ><a href='' class='page-link'>...</a></li>";
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($second_last)."'>$second_last</a></li>";
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($total_no_of_pages)."'>$total_no_of_pages</a></li>";
+			}
 
-<select class="looppage_combowidget"  onchange="nextnavpg();" id="pgtkn">
-	<option value="<?php echo base64_encode("1")?>" >Go to</option>
+		 elseif($page_no > 4 && $page_no < $total_no_of_pages - 4) {		 
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode(1)."'>1</a></li>";
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode(2)."'>2</a></li>";
+	        echo "<li class='page-item' ><a class='page-link' >...</a></li>";
+	        for ($counter = $page_no - $adjacents; $counter <= $page_no + $adjacents; $counter++) {			
+	           if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}                  
+	       }
+	       echo "<li class='page-item' ><a class='page-link' >...</a></li>";
+		   echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($second_last)."'>$second_last</a></li>";
+		   echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($total_no_of_pages)."'>$total_no_of_pages</a></li>";      
+	            }
+			
+			else {
+	        echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode(1)."'>1</a></li>";
+			echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode(2)."'>2</a></li>";
+	        echo "<li class='page-item' ><a class='page-link' >...</a></li>";
 
+	        for ($counter = $total_no_of_pages - 6; $counter <= $total_no_of_pages; $counter++) {
+	          if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}                   
+	                }
+	            }
+		}
+	?>
+	    
+		<li  <?php if($page_no >= $total_no_of_pages){ echo "class='page-item disabled'"; }else{ echo " class='page-item' ";} ?>>
+		<a class='page-link'  <?php if($page_no < $total_no_of_pages) { echo "href='".$clean_current_url.base64_encode($next_page)."'"; } ?>>Next</a>
+		</li>
+	    <?php if($page_no < $total_no_of_pages){
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($total_no_of_pages)."'>Last &rsaquo;&rsaquo;</a></li>";
+			} ?>
+	</ul>
+</div>
+<div style='border-top: dotted 1px blue; padding-left: 20px;' class="d-lg-none">
+<p  class="looppage_labelwidget" align="center" style="width: 100%;"> <?php echo  $limit_per_page ;?>  
+<select class="looppage_combowidget" onChange="changelim(this.value);" name="reclimcmb" id="reclimcmb">
+<option>1</option>
+<option>2</option>
+<option>5</option>
+<option>10</option>
+<option>50</option>
+<option>100</option>
+<option>200</option>
+<option>500</option>
+<option>1000</option>
+<option value="100000000000000000">All Records</option>
+</select>
+</p>
+<div class="looppage_labelwidget text-primary" style="text-align: center; width: 100%"> Page <?php echo $page_no." of ".$total_no_of_pages; ?></div>
+	<ul class="pagination  pagination-sm  justify-content-center">
+	<li <?php if($page_no <= 1){ echo "class='page-item disabled'"; }else{ echo " class='page-item' ";}  ?>>
+		<a class='page-link' <?php if($page_no > 1){ echo "href='".$clean_current_url.base64_encode($previous_page)."'"; } ?>> Prev </a>
+		</li>
+	       
+	    <?php 
+		if ($total_no_of_pages <= 4){  	 
+			for ($counter = 1; $counter <= $total_no_of_pages; $counter++){
+				if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}
+	        }
+		}
+		elseif($total_no_of_pages > 4){
+			
+		if($page_no <= 4) {			
+		 for ($counter = 1; $counter <= 4; $counter++){		 
+				if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a href='' class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}
+	        }
+			echo "<li class='page-item' ><a href='' class='page-link'>...</a></li>";
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($second_last)."'>$second_last</a></li>";
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($total_no_of_pages)."'>$total_no_of_pages</a></li>";
+			}
+
+		 elseif($page_no > 4 && $page_no < $total_no_of_pages - 2) {		 
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode(1)."'>1</a></li>";
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode(2)."'>2</a></li>";
+	        echo "<li class='page-item' ><a class='page-link' >...</a></li>";
+	        for ($counter = $page_no - $mobi_adjacents; $counter <= $page_no + $mobi_adjacents; $counter++) {			
+	           if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}                  
+	       }
+	       echo "<li class='page-item' ><a class='page-link' >...</a></li>";
+		   echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($second_last)."'>$second_last</a></li>";
+		   echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($total_no_of_pages)."'>$total_no_of_pages</a></li>";      
+	            }
+			
+			else {
+	        echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode(1)."'>1</a></li>";
+			echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode(2)."'>2</a></li>";
+	        echo "<li class='page-item' ><a class='page-link' >...</a></li>";
+
+	        for ($counter = $total_no_of_pages - 2; $counter <= $total_no_of_pages; $counter++) {
+	          if ($counter == $page_no) {
+			   echo "<li class='page-item active'><a class='page-link' >$counter</a></li>";	
+					}else{
+	           echo "<li class='page-item' ><a class='page-link' href='".$clean_current_url.base64_encode($counter)."'>$counter</a></li>";
+					}                   
+	                }
+	            }
+		}
+	?>
+	    
+		<li  <?php if($page_no >= $total_no_of_pages){ echo "class='page-item disabled'"; }else{ echo " class='page-item' ";} ?>>
+		<a class='page-link'  <?php if($page_no < $total_no_of_pages) { echo "href='".$clean_current_url.base64_encode($next_page)."'"; } ?>>Next</a>
+		</li>
+	    <?php if($page_no < $total_no_of_pages){
+			echo "<li class='page-item' ><a class='page-link'  href='".$clean_current_url.base64_encode($total_no_of_pages)."'> > </a></li>";
+			} ?>
+	</ul>
+</div>
   <?php
   //===================== change records limit ===============
   if(isset($_GET['txtreclim'])){
@@ -68,44 +277,11 @@ $_SESSION['filelim']=$_GET['txtreclim'];
 	</script>
 	<?php
   }
-  //===================== change records limit ===============
-
-  $showingpg="1";
-  if(isset($_GET['rectkn'])){
-  $showingpg=base64_decode($_GET['rectkn']);
-  }
-for($i=1; $i<=$pagination_record_count; $i++) {?>
-<option value="<?php echo base64_encode($i)?>" >Page <?php echo $i?></option>
-<?php }?>
-</select>
-| Showing page  <?php echo $showingpg;?>
-</p>
- <!-- loop next pages  -->
-<script>
-function nextnavpg(){
-var pgtkn=document.getElementById("pgtkn").value;
-var recparam= "?rectkn="+pgtkn;
-//===================== search if param already ==========
-var currloc = window.location.href;
-if (currloc.indexOf("?") >= 0){
-recparam= "&rectkn="+pgtkn;
-}
-
-if (currloc.indexOf("&rectkn") >= 0){
-currloc= currloc.split("&rectkn")[0];
-}
-if (currloc.indexOf("?rectkn") >= 0){
-currloc= currloc.split("?rectkn")[0];
-recparam= "?rectkn="+pgtkn;
-
-}
-//===================== search if param already ==========
-window.location=currloc +recparam;
-}
-
+  ?>
+<script type="text/javascript">
 //=========================== push write limit to file
-function changelim(){
-var pgtkn=document.getElementById("reclimcmb").value;
+function changelim(newlimit){
+var pgtkn=newlimit;
 
 var iofile = "?txtreclim="+pgtkn;
 var currloc2 = window.location.href;
@@ -117,4 +293,3 @@ window.location=currloc2 +iofile;
 
 }
 </script>
-</div>
