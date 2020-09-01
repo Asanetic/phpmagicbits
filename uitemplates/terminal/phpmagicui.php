@@ -434,7 +434,7 @@ function create_table_ui($file_path, $fileds_n_values_json, $tbl, $create_new_fi
     	<?php echo magic_button_link(\'./edit'.$tbl.'.php?newrecord\', \'<i class="fa fa-plus"></i> Add new\', \'style="display:inline-block;"\');?> 
     	<?php echo magic_button_link(\'./'.$tbl.'.php\', \'<i class="fa fa-refresh"></i> Refresh\', \'style="display:inline-block;"\');?> 
 
-		<hr><input type="text" placeholder="Search '.str_replace("_", ' ', $tbl).'" name="txt_'.$tbl.'" class=" form-control col-md-9" style="display:inline-block; background-color:transparent; border-bottom:1px solid gray; "/>
+		<hr><input type="text" placeholder="Search '.str_replace("_", ' ', $tbl).'" name="txt_'.$tbl.'" class=" form-control col-md-9" style="display:inline-block; background-color:transparent; border-bottom:1px solid gray; "  autofocus="" />
     	<?php echo magic_button(\'q'.$tbl.'_btn\', \'Search\', \'style="display:inline-block;"\');?> 
 
 	</div>
