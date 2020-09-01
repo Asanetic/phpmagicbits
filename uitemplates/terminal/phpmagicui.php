@@ -741,6 +741,174 @@ if($login_resetrequest_updatepass_newacc=='updatepass'){
 
 }
 
+function  install_pdf()
+{
+	ui_write_to_file('../tcpdf.zip', file_get_contents('https://github.com/Asanetic/phpmagicbits/raw/master/uitemplates/tcpdf.zip'));
+
+		$zip = new ZipArchive;
+		$res = $zip->open('../tcpdf.zip');
+		if ($res === TRUE) {
+		  $zip->extractTo('../');
+		  $zip->close();
+		  echo 'TCPDF Folder Created!';
+
+		} else {
+		  echo 'An error occured!';
+		}
+
+}
+
+function create_pdf_frame($title, $file_path, $sub_headers)
+{
+$pdflist_ui='<?php
+ob_start();
+include("./data_control/conn.php"); 
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+
+$buttonclr="#007bff";
+
+$logoimg="./img/bg.jpg";
+
+$logohead2="./img/logo.png";
+
+$image = imagecreatefrompng($logohead2);
+$bg = imagecreatetruecolor(imagesx($image), imagesy($image));
+imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+imagealphablending($bg, TRUE);
+imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+imagedestroy($image);
+$quality = 50; 
+imagejpeg($bg, $logohead2.".jpg", $quality);
+imagedestroy($bg);
+
+$logohead3= $logohead2.".jpg";
+$splithex = str_split(str_replace("#","",$buttonclr), 2);
+$r = hexdec($splithex[0]);
+$g = hexdec($splithex[1]);
+$b = hexdec($splithex[2]);
+$lineclr=$r . ", " . $g . ", " . $b;
+
+
+$arrayclr = explode(\',\', $lineclr);
+
+
+
+// Include the main TCPDF library (search for installation path).
+require_once("./tcpdf/tcpdf.php");
+
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, \'UTF-8\', false);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, \'\', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, \'\', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+ $pdf->setImageScale(1.53);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).\'/lang/eng.php\')) {
+    require_once(dirname(__FILE__).\'/lang/eng.php\');
+    $pdf->setLanguageArray($l);
+}
+// ---------------------------------------------------------
+// ---------------------------------------------------------
+
+// set font
+$pdf->SetFont(\'helvetica\', \'B\', 12);
+
+// add a page
+$pdf->AddPage();
+$style5 = array(\'width\' => 0.25, \'color\' => array($r,$g,$b));
+$style4 = array(\'width\' => 0.25, \'cap\' => \'butt\', \'join\' => \'miter\', \'dash\' => 0, \'color\' => array($r,$g,$b));
+
+//print_r($splithex);
+// Line
+$pdf->Line(200, 200, 200, 30, $style4);
+
+// Circle and ellipse
+$pdf->SetLineStyle($style4);
+$pdf->Circle(199,120,2);
+$pdf->Circle(192,120,8);
+$pdf->Circle(205,100,8);
+$pdf->Circle(205,100,20);
+$pdf->Circle(195,150,8);
+
+// set alpha to semi-transparency
+$pdf->SetAlpha(0.1);
+//===================== params =====================================
+
+
+$bus_name="'.$title.'";
+$bus_email="";
+$bus_tel="";
+$sub_headers="'.$sub_headers.'";
+//===================== params =====================================
+$pdf->Image($logoimg, 0, 0, 260, 297, \'\', \'\', \'\', false, 300, \'\', false, false, 0);
+$pdf->Line(200, 200, 200, 30, $style5);
+
+//Start Graphic Transformation
+// set bacground image
+$pdf->SetAlpha(1);
+
+$pdf->StartTransform();
+$pdf->StarPolygon(106, 26, 9, 25, 3, 0, 1, \'CNZ\');
+$pdf->Image($logohead3, 96, 16, 20, 20, \'\',\'\', \'\', false, 0, \'\', false, false, 0, false, false, false);
+
+$pdf->StopTransform();
+
+$pdf->Ln(10);
+$pdf->Write(0, $bus_name, \'\', 0, \'C\', 1, 0, false, false, 0);
+$pdf->SetFont(\'helvetica\', \'\', 10);
+$pdf->Ln(3);
+$pdf->Write(0, $sub_headers, \'\', 0, \'C\', 1, 0, false, false, 0);
+$pdf->Ln(10);
+
+
+$pdf->SetFont(\'helvetica\', \'b\', 10);
+$pdf->Line(200, 200, 200, 30, $style4);
+
+$pdf->writeHTML(\'<div align="left"> '.$title.'<hr/></div>\', true, false, false, false, \'C\');
+
+$pdf->SetFont(\'helvetica\', \'\', 8);
+
+
+
+
+// ---------------------------------------------------------
+//Close and output PDF document
+$pdf->Output(\''.$title.'.pdf\', \'I\');
+
+//============================================================+
+// END OF FILE
+//============================================================+
+
+?>';
+
+	if($file_path!='')
+	{
+
+		ui_write_to_file($file_path, $pdflist_ui);
+
+	}
+}
+
+
 function fend_help()
 {
 	$help_functions='
@@ -785,7 +953,14 @@ function fend_help()
 	//==== create login reset passwrod and create acc ui
 
 	create_accounts_ui($file_path, $login_resetrequest_updatepass_newacc);
- 	';
+
+	//==========create pdf frame==============
+	
+	create_pdf_frame($title, $file_path, $sub_headers);
+
+	';
+
+
 
 
 	return nl2br($help_functions);

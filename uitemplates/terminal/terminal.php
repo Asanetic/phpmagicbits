@@ -1,22 +1,29 @@
 <?php
 ob_start();
-
+include('../data_control/conn.php');
 //=========
 $col_script="
 `primkey` int(255) PRIMARY KEY AUTO_INCREMENT,
-`tenant_id` varchar(500) NOT NULL,
-`room_id` varchar(500) NOT NULL,
-`property_id` varchar(500) NOT NULL,
-`transaction_ref` varchar(500) NOT NULL,
-`amount` int(200) NOT NULL,
-`current_month` varchar(500) NOT NULL,
-`site_id` varchar(500) NOT NULL";
+`invoice_id` varchar(500) NOT NULL,
+`client_id` varchar(500) NOT NULL,
+`project_id` varchar(500) NOT NULL,
+`invoice_no` varchar(500) NOT NULL,
+`date_paid` varchar(500) NOT NULL,
+`status` varchar(500) NOT NULL,
+`payment_ref_no` varchar(500) NOT NULL,
+`remark` text NOT NULL,
+`paid` int(200) NOT NULL,
+`project_amount` int(200) NOT NULL,
+`due_date` varchar(500) NOT NULL";
+
 
 $navbar_path="./includes/navbar.php";
 $footer_path="./includes/footer.php";
 $header_css_scripts="./includes/header_css_scripts.php";
 $background_image_path="";
 $template_path="";
+
+$icon_title_json='{"New Projects":"./img/logo.png","Revisions":"./img/logo.png","Available Projects":"./img/logo.png"}';
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,1 +1,1 @@
-<?php create_magic_form('../myaccount.php', magic_sql_json_cols('digi_admin'), 'digi_admin', '5', 'col-md-4', '', 'digi_admin Inputs');?>
+<?php create_pdf_frame('Members Report', '../membersreport.php', 'Ezra Welfare Organixation');?>
