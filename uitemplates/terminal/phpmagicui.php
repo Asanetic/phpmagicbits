@@ -957,7 +957,10 @@ function fend_help()
 	//==========create pdf frame==============
 	
 	create_pdf_frame($title, $file_path, $sub_headers);
+	
+	//=============== create pdf folder
 
+	install_pdf();
 	';
 
 
