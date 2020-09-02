@@ -758,6 +758,52 @@ function  install_pdf()
 
 }
 
+
+function clone_module($original_module, $new_name, $create_list, $create_profile, $create_cruds)
+{
+	if($create_cruds=='yes'){
+
+	//clone cruds 
+
+	ui_write_to_file('../data_control/'.$new_name.'.php', file_get_contents('../data_control/'.$original_module.'.php'));
+	
+	}
+
+	if($create_list=='yes'){
+
+	//clone listing 
+
+	ui_write_to_file('../data_ui/'.$new_name.'.php', file_get_contents('../data_ui/'.$original_module.'.php'));
+
+	ui_write_to_file('../'.$new_name.'.php', file_get_contents('../'.$original_module.'.php'));
+	
+
+	//==== replace include cruds 
+
+	replace_file_section('../'.$new_name.'.php', './data_control/'.$original_module.'.php', './data_control/'.$new_name.'.php');
+
+		//==== replace include cruds 
+
+	replace_file_section('../'.$new_name.'.php', './data_ui/'.$original_module.'.php', './data_ui/'.$new_name.'.php');
+
+	
+	}
+
+	if($create_profile=='yes'){
+
+	//clone profile 
+
+	ui_write_to_file('../edit'.$new_name.'.php', file_get_contents('../edit'.$original_module.'.php'));
+	
+	//==== replace include cruds 
+
+	replace_file_section('../edit'.$new_name.'.php', './data_control/'.$original_module.'.php', './data_control/'.$new_name.'.php');
+
+	
+	}
+}
+
+
 function create_pdf_frame($title, $file_path, $sub_headers)
 {
 $pdflist_ui='<?php
@@ -957,10 +1003,15 @@ function fend_help()
 	//==========create pdf frame==============
 	
 	create_pdf_frame($title, $file_path, $sub_headers);
-	
+
 	//=============== create pdf folder
 
 	install_pdf();
+
+	//================clone modules
+
+	clone_module($original_module, $new_name, $create_list, $create_profile, $create_cruds);
+
 	';
 
 
