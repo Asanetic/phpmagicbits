@@ -352,7 +352,18 @@ $_SESSION[\''.$session_name.'\']=TRUE;
 $_SESSION[\''.$session_name.'_'.$user_email.'\']=$'.$clean_comment.'_r[\''.$user_email.'\'];
 $_SESSION[\''.$session_name.'_'.$username.'\']=$'.$clean_comment.'_r[\''.$username.'\'];
 
+if(isset($_GET[\'ref_url_go_to\'])){
+
+	$ref_url_go_to=base64_decode($_GET[\'ref_url_go_to\']);
+
+	header("location:".$ref_url_go_to."");
+
+
+}else{
+
 	header("location:'.$gotourl.'");
+
+}
 
 }else{
 
