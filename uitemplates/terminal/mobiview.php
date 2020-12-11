@@ -24,17 +24,19 @@
     margin: 10px;
 	}
 	.go_btn{
-		padding: 10px;
-		background-color: darkblue;
-		display: inline-block;
-		cursor: pointer;
-		color: #FFF;
+    padding: 10px;
+    background-color: darkblue;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFF;
+    border-radius: 9px;
 
 	}
 	.txt_url{
-		border: 0px;
-		border-bottom: 1px solid #CCC;
-		padding: 9px;
+	border: 0px;
+    border-bottom: 1px solid #CCC;
+    padding: 9px;
+    background-color: transparent;
 	}
 	input[type="text"]:focus{
 		outline:0!important;
@@ -56,10 +58,10 @@
     }
 	
 	.bottom_tray{
-	position: fixed;
+position: fixed;
     top: auto;
     bottom: 0px;
-    right: 10px;
+    right: 41px;
     margin: 10px;
 	}
 }
