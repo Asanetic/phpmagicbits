@@ -1,4 +1,4 @@
-
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Mobile simulator</title>
 <style type="text/css">
 	.frame{
@@ -39,7 +39,30 @@
 	input[type="text"]:focus{
 		outline:0!important;
 	}
-
+@media screen and (max-width: 700px) {
+	.frame{
+	position: fixed;
+    top: 43px;
+    right: 7px;
+    width: 94%;
+    height: 85vh
+    }
+    .mobil_frame{
+    	width: 100%;
+	    height: 105vh;
+	    position: fixed;
+	    right: 0px;
+	    top: -18px;  
+    }
+	
+	.bottom_tray{
+	position: fixed;
+    top: auto;
+    bottom: 0px;
+    right: 10px;
+    margin: 10px;
+	}
+}
 
 </style>
 <div style="text-align: center;">
