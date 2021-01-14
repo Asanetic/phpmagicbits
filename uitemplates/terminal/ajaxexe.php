@@ -73,7 +73,7 @@ if(isset($_POST['save_file']))
 
    if (!file_exists('./edithistory')) @mkdir('./edithistory');
 
-		  $file_to_write = fopen('./edithistory/'.$_POST['txt_writeto'].'_bkup.astg', 'w') or die("can't open file");
+		  $file_to_write = fopen('./edithistory/'.magic_basename($_POST['txt_writeto']).'_bkup.astg', 'w') or die("can't open file");
 		  fwrite($file_to_write, $backup);
 		  fclose($file_to_write);
 
