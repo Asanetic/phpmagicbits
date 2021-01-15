@@ -1,0 +1,1 @@
+<?php echo fend_help()?>
