@@ -14,7 +14,10 @@
 height: auto;
 background-color: rgba(255,255,255,0.7)
 }
-
+.form-group label{
+ font-weight:bold;
+ }
+    
 .padding_row
 {
 margin-top: 70px!important;
