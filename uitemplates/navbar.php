@@ -14,7 +14,7 @@
         </ul>
         <div class="mr-2"> 
           <img src="https://raw.githubusercontent.com/Asanetic/phpmagicbits/master/uitemplates/noavatar.jpeg" class="border" style="width: 40px; height: 40px; border-radius: 50%;" />
-          <login_str>
+          <!--login_str-->
         </div>
     </div>
 </nav>
