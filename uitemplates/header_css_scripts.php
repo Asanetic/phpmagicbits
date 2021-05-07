@@ -8,7 +8,15 @@
     background-position: center;
     background-size: cover;
 }
-
+.form-control label
+{
+    font-weight:bold;
+}
+.cpointer
+{
+cursor:pointer;
+}
+    
 .skin_plasma
 {
 height: auto;
