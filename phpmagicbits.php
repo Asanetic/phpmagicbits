@@ -636,23 +636,56 @@ function magic_basename($url_path)
 //======== show current url ===============
 
 //===============begin compress image=========================
+function resize_png_img($width = NULL, $height = NULL, $targetFile, $originalFile) 
+{
+  
+$img = imagecreatefrompng($originalFile);
+/*if custom values for width and height are not set, 
+ *Calculate from image original width and height
+ */
+    $imgWidth = imagesx($img);//get width of original image
+    $imgHeight = imagesy($img);
+  
+if($width != NULL && $height != NULL){
+    $newWidth = $width;
+    $newHeight = $height;
+}else{
+
+    $newWidth = intval($imgWidth);
+    $newHeight = intval($imgHeight);
+}
+$newImage = imagecreatetruecolor($newWidth, $newHeight);
+imagealphablending($newImage, false);
+imagesavealpha($newImage,true);
+$transparency = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparency);
+imagecopyresampled($newImage, $img, 0, 0, 0, 0, $newWidth, $newHeight, $imgWidth, $imgHeight);
+imagepng($newImage,$targetFile, 9);
+}
+
 function magic_compress_file($source, $destination, $quality) 
 {
 
 		$info = getimagesize($source);
 
-		if ($info['mime'] == 'image/jpeg') 
-			$image = imagecreatefromjpeg($source);
-
-		elseif ($info['mime'] == 'image/gif') 
-			$image = imagecreatefromgif($source);
-
-		elseif ($info['mime'] == 'image/png') 
-			$image = imagecreatefrompng($source);
-		elseif ($info['mime'] == 'image/bmp') 
-			$image = imagecreatefrompng($source);
-
+	if ($info['mime'] == 'image/jpeg'){ 
+		$image = imagecreatefromjpeg($source);
 		imagejpeg($image, $destination, $quality);
+
+        }elseif ($info['mime'] == 'image/gif') {
+		$image = imagecreatefromgif($source);
+		imagejpeg($image, $destination, $quality);
+
+        }elseif ($info['mime'] == 'image/png') {
+          
+          $width = imagesx(imagecreatefrompng($source))/3;
+	  $height = imagesy(imagecreatefrompng($source))/3;
+	
+	 resize_png_img($width, $height, $destination, $source);
+          
+        }elseif ($info['mime'] == 'image/bmp'){
+	$image = imagecreatefrompng($source);
+        }		
 
 		return $destination;
 	}
