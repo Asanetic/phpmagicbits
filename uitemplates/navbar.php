@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light  shadow-sm fixed-top  border-bottom border-light" style="background-color:rgb(250 240 247);">
+<nav class="navbar navbar-expand-md navbar-light  shadow-sm fixed-top  border-bottom border-light" style="background-color:rgb(234 246 254);">
     <a class="navbar-brand text-primary" href="#">
         <img src="{app_logo}" style="width: 50px; height: 50px;" /> {appname}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
