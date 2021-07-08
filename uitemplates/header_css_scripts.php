@@ -4,7 +4,7 @@
 //Name ANd Logo
 
 $mep_app_name="{appname}";
-$mep_app_logo="{applogo}";
+$mep_app_logo="{app_logo}";
 $mep_app_logo_style="width: auto; height: 50px;";
 
 //App color Scheme
