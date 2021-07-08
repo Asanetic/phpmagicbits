@@ -1,7 +1,7 @@
 <?php
 //*******************************  app Settings
 
-//Name ANd Logo
+//Name and Logo
 
 $mep_app_name="{appname}";
 $mep_app_logo="{app_logo}";
@@ -11,27 +11,29 @@ $mep_app_logo_style="width: auto; height: 50px;";
 //------------------------------
 
 $theme_name="Mosy"; //-Theme Name - Default - Modular Operating system (Mosy)
-$btn_bg="#F9B234"; //-Button color
+$btn_bg="#0673DC"; //-Button color
 $btn_txt="#fff"; //-Button text color
 $ctn_bg="transparent"; //-Container color
 $ctn_txt="#000"; //-Container text color - $ctn_txt
-$body_color="rgba(255, 255, 255, 0.5)"; //-Body color - $body_color
+$body_color="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
 $body_txt="#000"; //-Body text - $body_txt
-$nav_bar_bg_color="#F0ECF5"; //-nav_bar_bg_color
-$navbar_border_color="#F9B234"; //-navbar_border_color
-$navbar_border_size="1"; //-navbar_border_size
+$nav_bar_bg_color="#BEEFEF"; //-nav_bar_bg_color
+$navbar_border_color="#000"; //-navbar_border_color
+$navbar_border_size="2"; //-navbar_border_size
 $nav_shadow_class=""; // -nav_shadow_class
-$gen_border_color="#F9F7F9";
+$gen_border_color="#0673DC";
 $gen_border_size="1";
 $wild_color="";
+$skin_plasma="rgba(255, 255, 255, 0.5)"; //-Body color - $body_color
+
 //Gradient colors
 //------------------
 
- $first_color="132,29,167"; //rgb
- $second_color="0,45,87"; //rgb
+ $first_color="255,255,255"; //rgb
+ $second_color="5,195,193"; //rgb
 
- $btn_first_color="#F9B234";
- $btn_second_color="darkblue";
+ $btn_first_color="#0673DC";
+ $btn_second_color="#000";
 
 //*******************************  app Settings
 
@@ -109,6 +111,33 @@ $wild_color="";
   border-color: <?php echo  $btn_bg?>;
 }
 
+
+.skin_plasma
+{
+	height: auto;
+	background-color: <?php echo $skin_plasma;?>
+}
+
+
+   /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: <?php echo $btn_bg;?>; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 /*------------------------custom theme color scheme  ------------------------------*/
 
 body
@@ -139,12 +168,6 @@ body
 
 .cpointer{
     cursor: pointer;
-}
-
-.skin_plasma
-{
-	height: auto;
-	background-color: rgba(255,255,255,0.7)
 }
 
 .padding_row_gen
