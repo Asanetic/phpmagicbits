@@ -19,7 +19,7 @@ $body_color="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
 $body_txt="#000"; //-Body text - $body_txt
 $nav_bar_bg_color="#BEEFEF"; //-nav_bar_bg_color
 $navbar_border_color="#000"; //-navbar_border_color
-$navbar_border_size="2"; //-navbar_border_size
+$navbar_border_size="1"; //-navbar_border_size
 $nav_shadow_class=""; // -nav_shadow_class
 $gen_border_color="#0673DC";
 $gen_border_size="1";
@@ -28,7 +28,6 @@ $skin_plasma="rgba(255, 255, 255, 0.5)"; //-Body color - $body_color
 
 //Gradient colors
 //------------------
-
  $first_color="255,255,255"; //rgb
  $second_color="5,195,193"; //rgb
 
