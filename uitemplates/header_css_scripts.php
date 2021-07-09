@@ -11,27 +11,25 @@ $mep_app_logo_style="width: auto; height: 50px;";
 //------------------------------
 
 $theme_name="Mosy"; //-Theme Name - Default - Modular Operating system (Mosy)
-$btn_bg="#0673DC"; //-Button color
+$btn_bg="#ED008C"; //-Button color
 $btn_txt="#fff"; //-Button text color
 $ctn_bg="transparent"; //-Container color
 $ctn_txt="#000"; //-Container text color - $ctn_txt
-$body_color="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
+$body_color="rgba(255, 255, 255, 0.4)"; //-Body color - $body_color
 $body_txt="#000"; //-Body text - $body_txt
-$nav_bar_bg_color="#BEEFEF"; //-nav_bar_bg_color
+$nav_bar_bg_color="#FFCBE8"; //-nav_bar_bg_color
 $navbar_border_color="#000"; //-navbar_border_color
-$navbar_border_size="1"; //-navbar_border_size
+$navbar_border_size="0"; //-navbar_border_size
 $nav_shadow_class=""; // -nav_shadow_class
-$gen_border_color="#0673DC";
+$gen_border_color="#ED008C";
 $gen_border_size="1";
 $wild_color="";
-$skin_plasma="rgba(255, 255, 255, 0.5)"; //-Body color - $body_color
+$skin_plasma="rgba(255, 255, 255, 0.4)"; //-Body color - $body_color
+$body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgba(101, 45, 144, 41%) 29%,  rgb(255 0 140 / 34%) 75%)";
 
 //Gradient colors
 //------------------
- $first_color="255,255,255"; //rgb
- $second_color="5,195,193"; //rgb
-
- $btn_first_color="#0673DC";
+ $btn_first_color="#ED008C";
  $btn_second_color="#000";
 
 //*******************************  app Settings
@@ -43,6 +41,17 @@ $skin_plasma="rgba(255, 255, 255, 0.5)"; //-Body color - $body_color
   
 <style>
 /*------------------------custom theme color scheme  ------------------------------*/
+
+body
+{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: coverer;
+    background-image: url('./img/bg.jpg');
+	background:<?php echo $body_skin_css ?>;
+                                  
+}
+                            
 .msg_modal-content {
     border-left: 7px solid <?php echo $btn_bg; ?>;
     text-align: center;
@@ -80,6 +89,14 @@ $skin_plasma="rgba(255, 255, 255, 0.5)"; //-Body color - $body_color
 	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
              10px -10px 50px #ffffff;*/
   border:0px;                            
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  border-radius: 0px;
+  background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
+	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
+             10px -10px 50px #ffffff;*/
+  border:0px;  
 }
   
 .ctn_set
@@ -138,28 +155,17 @@ $skin_plasma="rgba(255, 255, 255, 0.5)"; //-Body color - $body_color
   background: #555; 
 }
 /*------------------------custom theme color scheme  ------------------------------*/
-
-body
-{
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: coverer;
-    background-image: url('./img/bg.jpg');
-	background: linear-gradient(0deg, rgba(<?php  echo $first_color; ?>, 0.21612394957983194) 0%, rgba(<?php echo $second_color ?>,1) 100%);
-}
-                                
-.bg_grad{
-  background: rgb(238,174,202);
-	background: linear-gradient(0deg, rgba(<?php  echo $first_color; ?>, 0.21612394957983194) 0%, rgba(<?php echo $second_color ?>,1) 100%);
-}
                                 
 .form-control{
   background-color:transparent;
   border:none;
   border-bottom:1px solid <?php echo $btn_first_color?>;
   border-radius:0px;
+  color:<?php echo $body_txt?>;
 }
-                                
+.table {
+color:<?php echo $body_txt;?>;
+}
 .form-group label
 {
 	font-weight:bold;  
