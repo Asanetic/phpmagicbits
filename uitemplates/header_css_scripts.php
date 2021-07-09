@@ -48,7 +48,7 @@ body
     background-position: center;
     background-size: cover;
     background-image: url('./img/bg.jpg');
-	background:<?php echo $body_skin_css ?>;
+    background:<?php echo $body_skin_css ?>;
                                   
 }
                             
