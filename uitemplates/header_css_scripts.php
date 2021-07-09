@@ -227,6 +227,10 @@ margin-top: 50px!important;
 height: auto;
 }
 
+.text_center_mobi{
+text-align:center!important;
+}
+
 }
     
 </style>
