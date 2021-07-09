@@ -47,14 +47,15 @@ body
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    background-image: url('./img/bg.jpg');
-	background:<?php echo $body_skin_css ?>;
+    /*background-image: url('./img/bg.jpg');*/
+    background:<?php echo $body_skin_css ?>;
                                   
 }
                             
 .msg_modal-content {
     border-left: 7px solid <?php echo $btn_bg; ?>;
     text-align: center;
+  	background-color:<?php echo $nav_bar_bg_color; ?>
 }
 .toast_card 
 {
@@ -159,12 +160,12 @@ body
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: <?php echo $btn_bg;?>; 
+  background: <?php echo $nav_bar_bg_color;?>; 
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2); 
+  background: <?php echo $btn_bg; ?>; 
 }
 
 /* Handle on hover */
