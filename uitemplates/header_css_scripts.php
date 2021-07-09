@@ -46,7 +46,7 @@ body
 {
     background-repeat: no-repeat;
     background-position: center;
-    background-size: coverer;
+    background-size: cover;
     background-image: url('./img/bg.jpg');
 	background:<?php echo $body_skin_css ?>;
                                   
