@@ -11,25 +11,25 @@ $mep_app_logo_style="width: auto; height: 50px;";
 //------------------------------
 
 $theme_name="Mosy"; //-Theme Name - Default - Modular Operating system (Mosy)
-$btn_bg="#ED008C"; //-Button color
+$btn_bg="darkblue"; //-Button color
 $btn_txt="#fff"; //-Button text color
 $ctn_bg="transparent"; //-Container color
 $ctn_txt="#000"; //-Container text color - $ctn_txt
-$body_color="rgba(255, 255, 255, 0.4)"; //-Body color - $body_color
+$body_color="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
 $body_txt="#000"; //-Body text - $body_txt
-$nav_bar_bg_color="#FFCBE8"; //-nav_bar_bg_color
+$nav_bar_bg_color="#BCD8F1"; //-nav_bar_bg_color
 $navbar_border_color="#000"; //-navbar_border_color
 $navbar_border_size="0"; //-navbar_border_size
-$nav_shadow_class=""; // -nav_shadow_class
-$gen_border_color="#ED008C";
+$nav_shadow_class="shadow"; // -nav_shadow_class
+$gen_border_color="darkblue";
 $gen_border_size="1";
 $wild_color="";
-$skin_plasma="rgba(255, 255, 255, 0.4)"; //-Body color - $body_color
-$body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgba(101, 45, 144, 41%) 29%,  rgb(255 0 140 / 34%) 75%)";
+$skin_plasma="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
+$body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 1%) 29%,  rgb(13 115 207 / 35%) 75%)";
 
 //Gradient colors
 //------------------
- $btn_first_color="#ED008C";
+ $btn_first_color="darkblue";
  $btn_second_color="#000";
 
 //*******************************  app Settings
@@ -48,7 +48,7 @@ body
     background-position: center;
     background-size: cover;
     background-image: url('./img/bg.jpg');
-    background:<?php echo $body_skin_css ?>;
+	background:<?php echo $body_skin_css ?>;
                                   
 }
                             
@@ -58,7 +58,23 @@ body
 }
 .toast_card 
 {
-	z-index:99999;    
+	z-index:99999;   
+}
+.toast {
+    background-color:<?php echo $btn_first_color ?>!important;
+
+}
+
+::-webkit-file-upload-button {
+  border-radius: 10px;
+  background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
+	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
+             10px -10px 50px #ffffff;*/
+  border:0px;  
+  color:<?php echo $btn_txt; ?>;
+  padding:4px;
+  padding-right:7px;
+  padding-left:7px;
 }
 
 .border_set{
@@ -67,9 +83,10 @@ body
 }  
 .btn_neo{
   border-radius: 30px;
-  box-shadow:  20px 20px 60px $btn_first_color,
-             -20px -20px 60px $btn_second_color;
-  border:0px;
+  background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
+	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
+             10px -10px 50px #ffffff;*/
+  border:0px;  
 }
 
 .text-primary{
