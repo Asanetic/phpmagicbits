@@ -1201,6 +1201,88 @@ $json_where_array = json_decode($input_where_json, true);
 
 }
 
+//======================================================= mosy_insert and update 
+function mosy_sql_insert($tbl, $insert_cols, $insert_values)
+{
+	global $single_db;
+	global $single_conn;
+	global $return_key;
+
+
+	$magic_insert_query = mysqli_query($single_conn, "INSERT INTO `$single_db`.`$tbl` (".$insert_cols.") VALUES (".$insert_values.")")  or die(mysqli_error($mysqliconn));
+
+	$return_key=mysqli_insert_id($single_conn);
+
+	return $return_key;
+
+}
+
+function mosy_multisql_insert($conn, $db, $tbl,  $insert_cols, $insert_values)
+{
+
+	global $return_key;
+  
+	$magic_insert_query = mysqli_query($conn, "INSERT INTO `$db`.`$tbl` (".$insert_cols.") VALUES (".$insert_values.")");
+
+	$return_key=mysqli_insert_id($conn);
+
+	return $return_key;
+
+}
+
+
+//------------------------- begin update query--------//
+function mosy_sql_update($tbl, $update_col_str, $where)
+{
+	global $single_db;
+	global $single_conn;
+	global $gen_update_query;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+	{
+
+		$where_clause="";
+	}
+
+
+	$gen_update_query=mysqli_query($single_conn, "UPDATE `$single_db`.`$tbl` SET $update_col_str ".$where_clause."");
+
+	return $gen_update_query;
+
+}
+
+function mosy_multisql_update($conn, $db, $tbl, $update_col_str, $where)
+{
+
+	global $gen_update_query;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+	{
+
+		$where_clause="";
+	}
+
+	$gen_update_query=mysqli_query($conn, "UPDATE `$db`.`$tbl` SET $update_col_str ".$where_clause."") or die(mysqli_error($mysqliconn));
+
+	return $gen_update_query;
+
+}
+//------------------------- begin update query--------//
+///=mysqli_real_escape_string
+function mmres($escape_str)
+{
+  global $single_conn;
+  
+  return mysqli_real_escape_string($single_conn, $escape_str);
+  
+}
+//=mysqli_real_escape_string
+
+//======================================================= mosy_insert and update
 
 function magic_multisql_where($conn, $input_where_json)
 {
@@ -2900,11 +2982,4 @@ function magic_create_table_ui($newfilename, $fileds_n_values_json, $tbl)
         $title = trim($title);
         return $title;
     }
-
-
-
-
-
-
-
 ?>
