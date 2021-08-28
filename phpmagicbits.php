@@ -1345,7 +1345,7 @@ function mosy_sqlarr_update($tbl, $fileds_n_values, $where)
 	}
 
 
-		$json_update_array = json_decode($fileds_n_values, true);
+		$json_update_array = ($fileds_n_values);
 
 
 	$magic_update_str=array();
@@ -1367,7 +1367,7 @@ function mosy_sqlarr_update($tbl, $fileds_n_values, $where)
 
 	$prepared_update_str=implode(", ", $magic_update_str);
 
-	$gen_update_query=mysqli_query($single_conn, "UPDATE `$single_db`.`$tbl` SET $prepared_update_str ".$where_clause."");
+	$gen_update_query=mysqli_query($single_conn, "UPDATE `$single_db`.`$tbl` SET $prepared_update_str ".$where_clause."") or die(mysqli_error($single_conn));
 
 	return $gen_update_query;
 
