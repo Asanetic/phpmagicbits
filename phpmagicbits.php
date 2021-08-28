@@ -1282,6 +1282,150 @@ function mmres($escape_str)
 }
 //=mysqli_real_escape_string
 
+
+//==================================================================
+
+
+function mosy_sqlarr_insert($tbl, $fileds_n_values_json)
+{
+	global $single_db;
+	global $single_conn;
+	global $return_key;
+
+	$json_inputs_array = ($fileds_n_values_json);
+
+
+	$magic_columns=array();
+	$magic_values=array();
+
+	foreach ($json_inputs_array as $key => $value) 
+	{
+		$magic_columns[]="`".$key."`";
+
+		if($json_inputs_array[$key]=="?"){
+
+			$magic_values[]="'".mysqli_real_escape_string($single_conn, $_POST["txt_".$key])."'";
+
+		}else{
+
+			$magic_values[]="'".mysqli_real_escape_string($single_conn, $json_inputs_array[$key])."'";
+
+		}
+
+	}
+	
+	$prepared_cols=implode(", ", $magic_columns);
+	$prepared_vals=implode(", ", $magic_values);
+
+
+	$magic_insert_query = mysqli_query($single_conn, "INSERT INTO `$single_db`.`$tbl` (".$prepared_cols.") VALUES (".$prepared_vals.")") or die(mysqli_error($single_conn));
+
+	$return_key=mysqli_insert_id($single_conn);
+
+	return $return_key;
+
+}
+
+
+
+  
+//------------------------- begin update query--------//
+function mosy_sqlarr_update($tbl, $fileds_n_values, $where)
+{
+	global $single_db;
+	global $single_conn;
+	global $gen_update_query;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+	{
+
+		$where_clause="";
+	}
+
+
+		$json_update_array = json_decode($fileds_n_values, true);
+
+
+	$magic_update_str=array();
+
+	foreach ($json_update_array as $key => $value) 
+	{
+
+		if($json_update_array[$key]=="?"){
+
+			$magic_update_str[]="`".$key."`='".mysqli_real_escape_string($single_conn, $_POST["txt_".$key])."'";
+
+		}else{
+
+			$magic_update_str[]="`".$key."`='".mysqli_real_escape_string($single_conn, $json_update_array[$key])."'";
+
+		}
+
+	}
+
+	$prepared_update_str=implode(", ", $magic_update_str);
+
+	$gen_update_query=mysqli_query($single_conn, "UPDATE `$single_db`.`$tbl` SET $prepared_update_str ".$where_clause."");
+
+	return $gen_update_query;
+
+}
+
+function magic_multisqlarr_update($conn, $db, $tbl, $fileds_n_values, $where)
+{
+
+	global $gen_update_query;
+
+	$where_clause=' WHERE '.$where.''; 
+
+	if($where=="")
+	{
+
+		$where_clause="";
+	}
+
+
+		$json_update_array = ($fileds_n_values);
+
+
+	$magic_update_str=array();
+
+	foreach ($json_update_array as $key => $value) 
+	{
+
+		if($json_update_array[$key]=="?"){
+
+			$magic_update_str[]="`".$key."`='".mysqli_real_escape_string($conn, $_POST["txt_".$key])."'";
+
+		}else{
+
+			$magic_update_str[]="`".$key."`='".mysqli_real_escape_string($conn, $json_update_array[$key])."'";
+
+		}
+
+	}
+
+	$prepared_update_str=implode(", ", $magic_update_str);
+
+	$gen_update_query=mysqli_query($conn, "UPDATE `$db`.`$tbl` SET $prepared_update_str ".$where_clause."");
+
+	return $gen_update_query;
+
+}
+//------------------------- begin update query--------//
+
+
+//===========================================================================================================================================
+
+
+
+
+
+
+
+
 //======================================================= mosy_insert and update
 
 function magic_multisql_where($conn, $input_where_json)
@@ -2138,7 +2282,7 @@ function magic_sql_count($tbl, $count_col, $where)
 	}
 
 
-$count_totals_query=mysqli_query($single_conn, "SELECT count($count_col) AS TOT_COUNT FROM `$single_db`.`$tbl` ".$where_clause."");
+$count_totals_query=mysqli_query($single_conn, "SELECT count($count_col) AS TOT_COUNT FROM `$single_db`.`$tbl` ".$where_clause."") or die(mysqli_error($single_conn));
 
 $count_totals_res=mysqli_fetch_array($count_totals_query);
 
