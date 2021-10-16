@@ -38,7 +38,8 @@ $body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 
     <link rel="stylesheet" href="./css/designer.css">
     <link rel="stylesheet" href="./css/fonts.css">
     <link rel="icon" href="<?php echo $mep_app_logo;?>?v=<?php echo date('dmysa');?>">
-  
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 <style>
 /*------------------------custom theme color scheme  ------------------------------*/
 
