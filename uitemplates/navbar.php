@@ -6,13 +6,13 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto pl-3 pb-2">
             <!--<li class="nav-item">
                 <a class="nav-link" href="#">{app_navlinks}</a>
             </li>-->
         <!--nav_nodes-->
         </ul>
-        <div class="mr-2"> 
+        <div class="mr-2 pl-2 pb-3 pb-lg-0"> 
           <!--<img src="{app_logo}" class="border" style="width: 40px; height: 40px; border-radius: 50%;" />-->
           <!--login_str-->
         </div>
