@@ -38,7 +38,7 @@ $body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 
     <link rel="stylesheet" href="./css/designer.css">
     <link rel="stylesheet" href="./css/fonts.css">
     <link rel="icon" href="<?php echo $mep_app_logo;?>?v=<?php echo date('dmysa');?>">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <style>
 /*------------------------custom theme color scheme  ------------------------------*/
@@ -70,8 +70,6 @@ body
 ::-webkit-file-upload-button {
   border-radius: 10px;
   background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
-	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
-             10px -10px 50px #ffffff;*/
   border:0px;  
   color:<?php echo $btn_txt; ?>;
   padding:4px;
@@ -86,8 +84,6 @@ body
 .btn_neo{
   border-radius: 30px;
   background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
-	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
-             10px -10px 50px #ffffff;*/
   border:0px;  
 }
 
@@ -200,7 +196,7 @@ margin-top: 100px!important;
 }
 .padding_row
 {
-margin-top: 65px!important;
+margin-top: 60px!important;
 }
 .navbar-brand{
     font-size:27px;
@@ -211,7 +207,7 @@ margin-top: 65px!important;
 {
 .padding_row
 {
-margin-top: 65px!important;
+margin-top: 60px!important;
 }
     
 .navbar-brand{
