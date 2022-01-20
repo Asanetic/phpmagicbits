@@ -54,9 +54,9 @@ body
 }
                             
 .msg_modal-content {
-    border-left: 7px solid <?php echo $btn_bg; ?>;
+    border-top: 7px solid <?php echo $btn_bg; ?>!important;
     text-align: center;
-  	background-color:<?php echo $nav_bar_bg_color; ?>
+  	background-color:<?php echo $nav_bar_bg_color; ?>!important;
 }
 .toast_card 
 {
@@ -205,6 +205,11 @@ margin-top: 60px!important;
 
 @media screen and (max-width: 700px)
 {
+/* width */
+::-webkit-scrollbar {
+  width: 1px;
+}
+
 .padding_row
 {
 margin-top: 60px!important;
