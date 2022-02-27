@@ -13,7 +13,7 @@ $mep_app_logo_style="width: auto; height: 50px;";
 $theme_name="Mosy"; //-Theme Name - Default - Modular Operating system (Mosy)
 $btn_bg="darkblue"; //-Button color
 $btn_txt="#fff"; //-Button text color
-$ctn_bg="transparent"; //-Container color
+$ctn_bg="rgba(255, 255, 255, 0.4)"; //-Container color
 $ctn_txt="#000"; //-Container text color - $ctn_txt
 $body_color="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
 $body_txt="#000"; //-Body text - $body_txt
@@ -42,6 +42,127 @@ $body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 
 
 <style>
 /*------------------------custom theme color scheme  ------------------------------*/
+.slanted_tray{
+clip-path: polygon(0 0, 95% 0%, 100% 100%, 0% 100%);
+padding-right:30px;
+} 
+.sticky_scroll{
+  position:sticky;
+  top:0px;
+}
+
+@keyframes zoom_in_out_anime {
+    0% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(1.2,1.2);
+    }
+    100% {
+        transform: scale(1,1);
+    }
+}
+
+.btn:hover {
+	animation: zoom_in_out_anime 1s linear ;
+}
+
+.bounce_up_down:hover {
+  animation: bounce_anime 2s linear alternate;
+  -webkit-animation: bounce_anime 2s linear alternate;
+}
+
+.zoom_in_out:hover {
+  animation: zoom_in_out_anime 2s linear alternate;
+  -webkit-animation: zoom_in_out_anime 2s linear alternate;
+}
+
+.badge:hover{
+  animation: zoom_in_out_anime 2s linear alternate;
+  -webkit-animation: zoom_in_out_anime 2s linear alternate;
+}
+
+@-webkit-keyframes bounce_anime {
+  0%, 100% {
+    -webkit-transform: translateY(0);
+  }
+  50% {
+    -webkit-transform: translateY(-10px);
+  }
+}
+
+
+@keyframes bounce_anime {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+
+@-webkit-keyframes bounce_left_right_anime {
+  0%, 100% {
+    -webkit-transform: translateX(0);
+  }
+  50% {
+    -webkit-transform: translateX(-10px);
+  }
+}
+
+
+@keyframes bounce_left_right_anime {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+}
+
+.bounce_left_right:hover{
+  animation: bounce_left_right_anime 2s linear alternate;
+  -webkit-animation: bounce_left_right_anime 2s linear alternate;
+}
+
+tr:hover{
+  animation: bounce_left_right_anime 2s linear alternate;
+  -webkit-animation: bounce_left_right_anime 2s linear alternate;
+}
+.table_cell_dropdown-content a {
+    font-size: 13px;
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+  
+}
+
+.bg_w_img{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url('./img/bg.jpg');
+}
+body
+{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /*background-image: url('./img/bg.jpg');*/
+    background:<?php echo $body_skin_css ?>;
+                                  
+}
+.msg_alert_modal{
+  animation: bounce_anime 2s linear alternate;
+  -webkit-animation: bounce_anime 2s linear alternate;
+  padding-top:10px;
+}                            
+.msg_modal-content {
+    border-top: 7px solid <?php echo $btn_bg; ?>!important;
+    text-align: center;
+  	background-color:<?php echo $nav_bar_bg_color; ?>!important;
+}
+
 
 body
 {
@@ -192,11 +313,11 @@ color:<?php echo $body_txt;?>;
 
 .padding_row_gen
 {
-margin-top: 100px!important;
+margin-top: 0px!important;
 }
 .padding_row
 {
-margin-top: 60px!important;
+margin-top: 0px!important;
 }
 .navbar-brand{
     font-size:27px;
@@ -205,6 +326,11 @@ margin-top: 60px!important;
 
 @media screen and (max-width: 700px)
 {
+
+.msg_alert_modal{
+  padding-top:10px!important;
+} 
+
 /* width */
 ::-webkit-scrollbar {
   width: 1px;
@@ -236,3 +362,19 @@ text-align:center!important;
 }
     
 </style>
+<script type="text/javascript">
+  
+	var mosythread ="mosythread?render_modal=";
+	var client_hive="clients_table";
+	var supplier_hive="suppliers";
+ 	var ajaxw=" WHERE ";
+	var ajaxl=" LIKE ";
+	var ajaxo =" OR ";
+	var ajaxa=" AND ";
+	var ajaxe="=";
+	var ajaxgb=" group by ";
+	var ajaxob=" order by ";
+    var ajaxvl ="  \'%' magic_clean_str(this.value) '%\' ";
+	var ajaxij= " INNER JOIN ";
+	var ajaxon= " ON ";
+</script>
