@@ -155,7 +155,6 @@ body
 .msg_alert_modal{
   animation: bounce_anime 2s linear alternate;
   -webkit-animation: bounce_anime 2s linear alternate;
-  padding-top:10px;
 }                            
 .msg_modal-content {
     border-top: 7px solid <?php echo $btn_bg; ?>!important;
