@@ -11,25 +11,25 @@ $mep_app_logo_style="width: auto; height: 50px;";
 //------------------------------
 
 $theme_name="Mosy"; //-Theme Name - Default - Modular Operating system (Mosy)
-$btn_bg="darkblue"; //-Button color
+$btn_bg="#E9AB0A"; //-Button color
 $btn_txt="#fff"; //-Button text color
 $ctn_bg="rgba(255, 255, 255, 0.4)"; //-Container color
 $ctn_txt="#000"; //-Container text color - $ctn_txt
 $body_color="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
 $body_txt="#000"; //-Body text - $body_txt
-$nav_bar_bg_color="#BCD8F1"; //-nav_bar_bg_color
-$navbar_border_color="#000"; //-navbar_border_color
+$nav_bar_bg_color="#F9EAC1"; //-nav_bar_bg_color
+$navbar_border_color="#E9AB0A"; //-navbar_border_color
 $navbar_border_size="1"; //-navbar_border_size
 $nav_shadow_class=""; // -nav_shadow_class
-$gen_border_color="darkblue";
+$gen_border_color="#E9AB0A";
 $gen_border_size="1";
 $wild_color="";
 $skin_plasma="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
-$body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 1%) 29%,  rgb(13 115 207 / 35%) 75%)";
+$body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 1%) 29%,  rgb(245 220 151 / 75%) 75%)";
 
 //Gradient colors
 //------------------
- $btn_first_color="darkblue";
+ $btn_first_color="#E9AB0A";
  $btn_second_color="#000";
 
 //*******************************  app Settings
@@ -129,7 +129,35 @@ padding-right:30px;
 tr:hover{
   animation: bounce_left_right_anime 2s linear alternate;
   -webkit-animation: bounce_left_right_anime 2s linear alternate;
-}
+}        
+         @-webkit-keyframes fadeindown {
+            0% {
+               opacity: 0;
+               -webkit-transform: translateY(-10px);
+            }
+            100% {
+               opacity: 1;
+               -webkit-transform: translateY(0);
+            }
+         }
+         
+         @keyframes fadeindown {
+            0% {
+               opacity: 0;
+               transform: translateY(-10px);
+            }
+            100% {
+               opacity: 1;
+               transform: translateY(0);
+            }
+         }
+         
+         .fadeindown {
+            -webkit-animation: fadeindown;
+            animation: fadeindown ease 2s;
+         }
+
+
 .table_cell_dropdown-content a {
     font-size: 13px;
   padding-top:6px!important;
@@ -147,14 +175,15 @@ body
 {
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    ba1kground-size: cover;
     /*background-image: url('./img/bg.jpg');*/
     background:<?php echo $body_skin_css ?>;
                                   
 }
 .msg_alert_modal{
-  animation: bounce_anime 2s linear alternate;
-  -webkit-animation: bounce_anime 2s linear alternate;
+  animation: bounce_anime 1s linear alternate;
+  -webkit-animation: bounce_anime 1s linear alternate;
+            
 }                            
 .msg_modal-content {
     border-top: 7px solid <?php echo $btn_bg; ?>!important;
@@ -325,9 +354,11 @@ margin-top: 0px!important;
 
 @media screen and (max-width: 700px)
 {
-
+.badge-primary{
+ margin-bottom:10px; 
+}
 .msg_alert_modal{
-  padding-top:10px!important;
+  padding-top:60px!important;
 } 
 
 /* width */
