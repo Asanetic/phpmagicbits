@@ -16,11 +16,11 @@ $btn_txt="#fff"; //-Button text color
 $ctn_bg="#fff"; //-Container color
 $ctn_txt="#000"; //-Container text color - $ctn_txt
 $body_color="rgba(255, 255, 255, 0.9)"; //-Body color - $body_color
-$body_txt="#000"; //-Body text - $body_txt
-$nav_bar_bg_color="#f8f9fa"; //-nav_bar_bg_color
+$body_txt="#344767"; //-Body text - $body_txt
+$nav_bar_bg_color="#fff"; //-nav_bar_bg_color
 $navbar_border_color="#ccc"; //-navbar_border_color
 $navbar_border_size="1"; //-navbar_border_size
-$nav_shadow_class=""; // -nav_shadow_class
+$nav_shadow_class="shadow-sm"; // -nav_shadow_class
 $gen_border_color="#1f34ab";
 $gen_border_size="1";
 $wild_color="";
@@ -40,13 +40,14 @@ $buttontxtclr=$btn_txt;
 ?>
     <link rel="stylesheet" href="./css/designer.css">
     <link rel="stylesheet" href="./css/fonts.css">
+    <link type=text/css href="https://fonts.googleapis.com/css?family=Muli:400,300" rel=stylesheet>
     <link rel="icon" href="<?php echo $mep_app_logo;?>?v=<?php echo date('dmysa');?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <style>
 /*------------------------custom theme color scheme  ------------------------------*/
 .shadow{
-  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%)!important;
 }
   
   .slanted_tray{
@@ -151,7 +152,10 @@ margin-bottom:10px;
   animation: bounce_left_right_anime 2s linear alternate;
   -webkit-animation: bounce_left_right_anime 2s linear alternate;
 }
-
+.auto_bounce_left_right{
+  animation: bounce_left_right_anime 2s linear alternate;
+  -webkit-animation: bounce_left_right_anime 2s linear alternate;
+}
 tr:hover{
   animation: bounce_left_right_anime 2s linear alternate;
   -webkit-animation: bounce_left_right_anime 2s linear alternate;
@@ -205,8 +209,7 @@ body
     background-size: cover;
     /*background-image: url('./img/bg.jpg');*/
     background:<?php echo $body_skin_css ?>;
-    color:<?php echo "#000"; ?>;
-    font-family: "Helvetica Neue","Open Sans","Arial","sans-serif"; 
+    font-family: "Muli","Helvetica Neue","Open Sans","Arial","sans-serif"; 
   	line-height:30px;
   	font-weight:400;
   	font-size:16px;
@@ -221,7 +224,10 @@ body
     text-align: center;
   	background-color:<?php echo $nav_bar_bg_color; ?>!important;
 }
-
+.auto_bounce{
+    animation: bounce_anime 1s linear alternate;
+  -webkit-animation: bounce_anime 1s linear alternate;
+}
 .command_pic_ring{
 width:100px;
 height:100px;
@@ -281,7 +287,7 @@ display:inline-block;
 }
 
 .text-primary{
-  color:#000!important;
+  color:<?php echo $body_txt;?>!important;
 }
 
 .btn_neoo2{
