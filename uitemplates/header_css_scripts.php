@@ -7,33 +7,36 @@ $mep_app_name="{appname}";
 $mep_app_logo="{app_logo}";
 $mep_app_logo_style="width: auto; height: 50px;";
 
-//App color Scheme
+/App color Scheme
 //------------------------------
 
 $theme_name="Mosy"; //-Theme Name - Default - Modular Operating system (Mosy)
-$btn_bg="#E9AB0A"; //-Button color
+$btn_bg="#1f34ab"; //-Button color
 $btn_txt="#fff"; //-Button text color
-$ctn_bg="rgba(255, 255, 255, 0.4)"; //-Container color
+$ctn_bg="#fff"; //-Container color
 $ctn_txt="#000"; //-Container text color - $ctn_txt
-$body_color="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
+$body_color="rgba(255, 255, 255, 0.9)"; //-Body color - $body_color
 $body_txt="#000"; //-Body text - $body_txt
-$nav_bar_bg_color="#F9EAC1"; //-nav_bar_bg_color
-$navbar_border_color="#E9AB0A"; //-navbar_border_color
+$nav_bar_bg_color="#f8f9fa"; //-nav_bar_bg_color
+$navbar_border_color="#ccc"; //-navbar_border_color
 $navbar_border_size="1"; //-navbar_border_size
 $nav_shadow_class=""; // -nav_shadow_class
-$gen_border_color="#E9AB0A";
+$gen_border_color="#1f34ab";
 $gen_border_size="1";
 $wild_color="";
-$skin_plasma="rgba(255, 255, 255, 0.2)"; //-Body color - $body_color
-$body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 1%) 29%,  rgb(245 220 151 / 75%) 75%)";
+$skin_plasma="rgba(255, 255, 255, 0.0)"; //-Body color - $body_color
+$body_skin_css="#f8f9fa";
 
 //Gradient colors
 //------------------
- $btn_first_color="#E9AB0A";
- $btn_second_color="#000";
+ $btn_first_color="#10102a";
+ $btn_second_color="#1f34ab";
 
 //*******************************  app Settings
-
+$skinclr=$ctn_bg;
+$buttonclr=$btn_bg;
+$gentxtclr=$ctn_txt;
+$buttontxtclr=$btn_txt;
 ?>
     <link rel="stylesheet" href="./css/designer.css">
     <link rel="stylesheet" href="./css/fonts.css">
@@ -42,7 +45,11 @@ $body_skin_css="linear-gradient(0deg, rgba(255,255,255, 0.2) 0%, rgb(19 31 42 / 
 
 <style>
 /*------------------------custom theme color scheme  ------------------------------*/
-.slanted_tray{
+.shadow{
+  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+}
+  
+  .slanted_tray{
 clip-path: polygon(0 0, 95% 0%, 100% 100%, 0% 100%);
 padding-right:30px;
 } 
@@ -51,6 +58,14 @@ padding-right:30px;
   top:0px;
 }
 
+.stats_knob{
+  border: 3px solid <?php echo $btn_bg?>;
+  border-bottom-color: #F8DD83;
+  border-left-color: #F8DD83;
+}
+.bg-warning {
+    background-color: #f7c72f!important;
+}
 @keyframes zoom_in_out_anime {
     0% {
         transform: scale(1,1);
@@ -62,7 +77,14 @@ padding-right:30px;
         transform: scale(1,1);
     }
 }
-
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
 .btn:hover {
 	animation: zoom_in_out_anime 1s linear ;
 }
@@ -80,6 +102,10 @@ padding-right:30px;
 .badge:hover{
   animation: zoom_in_out_anime 2s linear alternate;
   -webkit-animation: zoom_in_out_anime 2s linear alternate;
+}
+.badge-primary
+{
+margin-bottom:10px;  
 }
 
 @-webkit-keyframes bounce_anime {
@@ -162,6 +188,7 @@ tr:hover{
     font-size: 13px;
   padding-top:6px!important;
   padding-bottom:6px!important;
+  z-index:999;
   
 }
 
@@ -175,10 +202,14 @@ body
 {
     background-repeat: no-repeat;
     background-position: center;
-    ba1kground-size: cover;
+    background-size: cover;
     /*background-image: url('./img/bg.jpg');*/
     background:<?php echo $body_skin_css ?>;
-                                  
+    color:<?php echo "#000"; ?>;
+    font-family: "Helvetica Neue","Open Sans","Arial","sans-serif"; 
+  	line-height:30px;
+  	font-weight:400;
+  	font-size:16px;
 }
 .msg_alert_modal{
   animation: bounce_anime 1s linear alternate;
@@ -191,22 +222,35 @@ body
   	background-color:<?php echo $nav_bar_bg_color; ?>!important;
 }
 
+.command_pic_ring{
+width:100px;
+height:100px;
+border-radius:50%;
+padding:0px;
+display:inline-block;
+margin:50px;
+    border-top:1px solid #000;
+    animation-name: spin;
+    animation-duration: 17000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.command_pic_ring2{
+width:200px;
+height:200px;
+border-radius:50%;
+box-shadow:1px 1px 1px 1px <?php echo $btn_bg ?>;
+padding:0px;
+display:inline-block;
+    border-top:1px solid #000;
+    animation-name: spin;
+    animation-duration: 13000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
 
-body
-{
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    /*background-image: url('./img/bg.jpg');*/
-    background:<?php echo $body_skin_css ?>;
-                                  
-}
-                            
-.msg_modal-content {
-    border-top: 7px solid <?php echo $btn_bg; ?>!important;
-    text-align: center;
-  	background-color:<?php echo $nav_bar_bg_color; ?>!important;
-}
+
+
 .toast_card 
 {
 	z-index:99999;   
@@ -231,7 +275,7 @@ body
   border-width:<?php echo $gen_border_size; ?>px!important;
 }  
 .btn_neo{
-  border-radius: 30px;
+  border-radius: 10px;
   background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
   border:0px;  
 }
@@ -241,14 +285,14 @@ body
 }
 
 .btn_neoo2{
-	border-radius: 30px;
+	border-radius: 10px;
 	background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
 	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
              10px -10px 50px #ffffff;*/
 }
 
 .btn-primary{
-  border-radius: 30px;
+  border-radius: 10px;
   background: linear-gradient(225deg, <?php echo $btn_first_color ?>, <?php echo $btn_second_color?>);
 	/*box-shadow:  -10px 10px 90px <?php echo $btn_first_color ?>,
              10px -10px 50px #ffffff;*/
@@ -285,22 +329,22 @@ body
  background-color:<?php echo $nav_bar_bg_color;?>; 
  border-bottom:<?php echo $navbar_border_size?>px solid <?php echo $navbar_border_color?>;  
 }
-.page-item.active .page-link {
+
+.page-item.active .page-link 
+{
   color: <?php echo $btn_txt?>;
   background-color: <?php echo  $btn_bg?>;
   border-color: <?php echo  $btn_bg?>;
 }
-
 
 .skin_plasma
 {
 	height: auto;
 	background-color: <?php echo $skin_plasma;?>
 }
-
-
    /* width */
-::-webkit-scrollbar {
+::-webkit-scrollbar 
+{
   width: 10px;
 }
 
@@ -311,7 +355,7 @@ body
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: <?php echo $btn_bg; ?>; 
+  background: <?php echo "#F69520"; ?>; 
 }
 
 /* Handle on hover */
@@ -368,11 +412,11 @@ margin-top: 0px!important;
 
 .padding_row
 {
-margin-top: 60px!important;
+margin-top: 50px!important;
 }
     
 .navbar-brand{
-    font-size:1.25rem;
+    font-size:14px;
 }
 
 .padding_row_gen
