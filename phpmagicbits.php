@@ -1374,7 +1374,7 @@ function mosy_sqlarr_update($tbl, $fileds_n_values, $where)
 	}
 
 	$prepared_update_str=implode(", ", $magic_update_str);
-  echo $prepared_update_str;
+  ////echo $prepared_update_str;
 
 	$gen_update_query=mysqli_query($single_conn, "UPDATE `$single_db`.`$tbl` SET $prepared_update_str ".$where_clause."") or die(mysqli_error($single_conn));
 
