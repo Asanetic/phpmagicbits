@@ -3,8 +3,8 @@
 
 //Name and Logo
 
-$mep_app_name="Vue Js";
-$mep_app_logo="./img/logo.png";
+$mep_app_name="{appname}";
+$mep_app_logo="{app_logo}";
 $mep_app_logo_style="width: auto; height: 50px;";
 
 //App color Scheme
