@@ -40,6 +40,8 @@ $buttontxtclr=$btn_txt;
 ?>
     <link rel="stylesheet" href="./css/designer.css">
     <link rel="stylesheet" href="./css/fonts.css">
+    <link rel="stylesheet" href=".//fonts/css/all.min.css">  
+    <link rel="stylesheet" href="./css/adminlte.css?v=77">
     <link type=text/css href="https://fonts.googleapis.com/css?family=Muli:400,300" rel=stylesheet>
     <link rel="icon" href="<?php echo $mep_app_logo;?>?v=<?php echo date('dmysa');?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
