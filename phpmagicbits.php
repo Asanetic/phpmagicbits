@@ -2846,7 +2846,7 @@ function magic_split_str($text, $length, $maxLength)
 return $splitText;
 }
 
-function magic_post_curl($curlopt_url, $curlopt_httpheader, $curlopt_userpwd, $curlopt_post_fields, $curlopt_customrequest)
+function magic_post_curl($curlopt_url, $curlopt_httpheader="", $curlopt_userpwd="", $curlopt_post_fields="", $curlopt_customrequest="POST")
 {
 	global $curl_post_response;
 
