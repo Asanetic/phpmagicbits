@@ -1784,7 +1784,7 @@ function magic_if_image($file_path)
 
 	$filetype=$info->getExtension(); 
 
-	if($filetype=='jpg' || $filetype=='png' || $filetype=='bmp' || $filetype=='gif' || $filetype=='jpeg'){
+	if($filetype=='jpg' || $filetype=='png' || $filetype=='bmp' || $filetype=='gif' || $filetype=='jpeg' || $filetype=='webp'){
 
 		$is_image='Yes';
 
