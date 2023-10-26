@@ -2883,6 +2883,42 @@ function magic_post_curl($curlopt_url, $curlopt_httpheader = "", $curlopt_userpw
     return $curl_post_response;
 }
 
+function magic_post_curl_min($curlopt_url, $curlopt_post_fields = "", $curlopt_customrequest = "POST", $curlopt_httpheader = "", $curlopt_userpwd = "") {
+    global $curl_post_response;
+
+    $new_curl_method = 'POST';
+    if ($curlopt_customrequest != '') {
+        $new_curl_method = $curlopt_customrequest;
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $curlopt_url);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $new_curl_method);
+
+    if ($curlopt_httpheader != "") {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $curlopt_httpheader);
+    }
+    curl_setopt($ch, CURLOPT_USERPWD, $curlopt_userpwd);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $curlopt_post_fields);
+
+    $curl_post_response = curl_exec($ch);
+
+    if ($curl_post_response === false) {
+        // Handle cURL error
+        $error_message = curl_error($ch);
+        $error_code = curl_errno($ch);
+        $curl_post_response = "cURL Error $error_code: $error_message";
+    }
+
+    curl_close($ch);
+
+    return $curl_post_response;
+}
+
 function magic_create_backend($newdbfile_path, $fileds_n_values_json, $tbl, $imgcol_path_json, $template_path)
 {	
 
